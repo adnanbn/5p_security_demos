@@ -16,6 +16,8 @@ observability, and incident response.
 - Deterministic evidence for both masterclass incidents
 - GitHub Actions gates and isolated failing demonstration branches
 - Short translations for Django, Next.js, Angular, and mobile teams
+- AI-assisted security review and supply-chain hardening guides
+- A security-focused pull-request template and week-ahead exercise
 
 ## Local Setup
 
@@ -48,6 +50,15 @@ php artisan masterclass:replay 2 --requests=120 --seed=20260808
 
 Evidence is generated under `incidents/`. Participant prompts and facilitator
 findings are deliberately separate.
+
+## Guided Demonstrations
+
+- [`docs/demo-runbook.md`](docs/demo-runbook.md) - local incident and CI flow
+- [`docs/branch-catalog.md`](docs/branch-catalog.md) - one deliberate failure per branch
+- [`docs/ai-assisted-security-review.md`](docs/ai-assisted-security-review.md) - use AI without treating its output as trusted
+- [`docs/supply-chain-hardening.md`](docs/supply-chain-hardening.md) - connect packages, actions, credentials, and publishing
+- [`docs/security-week-objective.md`](docs/security-week-objective.md) - one risk, guard, proof, and gate
+- [`docs/reference-links.md`](docs/reference-links.md) - primary sources used by the lecture
 
 ## Safety
 
