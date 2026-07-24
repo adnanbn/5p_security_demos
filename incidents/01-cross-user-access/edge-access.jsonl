@@ -1,0 +1,6 @@
+{"timestamp":"2026-08-08T09:07:11-07:00","request_id":"i1-req-001","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/41","status":200,"duration_ms":34}
+{"timestamp":"2026-08-08T09:07:28-07:00","request_id":"i1-req-002","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/42","status":200,"duration_ms":31}
+{"timestamp":"2026-08-08T09:08:03-07:00","request_id":"i1-req-003","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/43","status":404,"duration_ms":19}
+{"timestamp":"2026-08-08T09:09:44-07:00","request_id":"i1-req-004","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/42","status":200,"duration_ms":29}
+{"timestamp":"2026-08-08T09:12:17-07:00","request_id":"i1-req-005","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/41","status":200,"duration_ms":33}
+{"timestamp":"2026-08-08T09:18:51-07:00","request_id":"i1-req-006","source_ip":"192.0.2.10","method":"GET","path":"/api/bookings/42","status":200,"duration_ms":30}

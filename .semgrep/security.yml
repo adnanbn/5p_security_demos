@@ -1,0 +1,21 @@
+rules:
+  - id: laravel-log-entire-request
+    message: Log selected security fields; do not log the complete request payload.
+    severity: ERROR
+    languages:
+      - php
+    patterns:
+      - pattern-either:
+          - pattern: Log::$METHOD(..., $REQUEST->all(), ...)
+          - pattern: Log::$METHOD(..., $REQUEST->headers->all(), ...)
+
+  - id: laravel-env-outside-config
+    message: Read environment values through Laravel configuration, not directly in application code.
+    severity: ERROR
+    languages:
+      - php
+    paths:
+      include:
+        - app/
+        - routes/
+    pattern: env(...)

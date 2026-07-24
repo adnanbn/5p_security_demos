@@ -1,0 +1,8 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "masterclass-demo-canary"
+description = "Synthetic secret used only by the intentionally failing demo branch"
+regex = '''MASTERCLASS_DEMO_SECRET_[A-Z0-9]{24}'''
+keywords = ["MASTERCLASS_DEMO_SECRET_"]

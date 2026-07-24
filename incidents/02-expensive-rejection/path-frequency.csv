@@ -1,0 +1,10 @@
+path,count
+/api/backup.zip,15
+/.env,14
+/api/phpinfo.php,14
+/api/vendor/phpunit,14
+/.git/config,13
+/api/.env,13
+/api/config,13
+/api/debug,13
+/wp-login.php,11
