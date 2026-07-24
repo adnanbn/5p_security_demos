@@ -14,4 +14,4 @@ Route::get('/partner/catalog', PartnerCatalogController::class)
 
 Route::fallback(fn () => response()->json([
     'message' => 'Not found.',
-], 404));
+], 404))->middleware('expensive.denial');
