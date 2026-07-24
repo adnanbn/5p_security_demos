@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - main
-      - "demo/**"
-      - "scenario/**"
   workflow_dispatch:
 
 permissions:
