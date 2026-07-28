@@ -1,5 +1,5 @@
 {
-  "event": "partner.request_denied",
+  "event": "api.request_denied",
   "request_id": "req_7f3...",
   "route_family": "unknown_probe",
   "outcome": "denied",
