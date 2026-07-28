@@ -40,6 +40,10 @@ class IncidentEvidenceGeneratorTest extends TestCase
             'Authorization never happened',
             File::get($directory.'/facilitator-findings.md'),
         );
+        $this->assertStringContainsString(
+            'copied the URL',
+            File::get($directory.'/support-report.md'),
+        );
     }
 
     public function test_incident_two_is_deterministic_and_bounded(): void
@@ -60,5 +64,13 @@ class IncidentEvidenceGeneratorTest extends TestCase
 
         $this->assertSame($first, $second);
         $this->assertCount(12, array_filter(explode("\n", $second)));
+        $this->assertSame(
+            0.02,
+            json_decode(
+                File::get($this->output.'/02-expensive-rejection/evidence-manifest.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['sample_rate'],
+        );
     }
 }

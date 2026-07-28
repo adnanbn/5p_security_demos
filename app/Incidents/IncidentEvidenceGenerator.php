@@ -28,12 +28,12 @@ class IncidentEvidenceGenerator
         $this->files->ensureDirectoryExists($directory);
 
         $requests = [
-            ['09:07:11', 'i1-req-001', '/api/bookings/41', 200, 34],
-            ['09:07:28', 'i1-req-002', '/api/bookings/42', 200, 31],
-            ['09:08:03', 'i1-req-003', '/api/bookings/43', 404, 19],
-            ['09:09:44', 'i1-req-004', '/api/bookings/42', 200, 29],
-            ['09:12:17', 'i1-req-005', '/api/bookings/41', 200, 33],
-            ['09:18:51', 'i1-req-006', '/api/bookings/42', 200, 30],
+            ['09:07:11', 'i1-req-001', '/api/bookings/8412', 200, 34],
+            ['09:07:28', 'i1-req-002', '/api/bookings/8411', 200, 31],
+            ['09:08:03', 'i1-req-003', '/api/bookings/8413', 404, 19],
+            ['09:09:44', 'i1-req-004', '/api/bookings/8412', 200, 29],
+            ['09:12:17', 'i1-req-005', '/api/bookings/8411', 200, 33],
+            ['09:18:51', 'i1-req-006', '/api/bookings/8412', 200, 30],
         ];
 
         $edge = [];
@@ -71,14 +71,25 @@ class IncidentEvidenceGenerator
                 'actor_id' => 17,
                 'request_id' => 'i1-login-001',
             ],
+            [
+                'timestamp' => '2026-08-08T09:08:46-07:00',
+                'event' => 'authentication_succeeded',
+                'actor_id' => 23,
+                'request_id' => 'i1-login-002',
+            ],
         ]);
 
         $this->files->put($directory.'/support-report.md', <<<'MARKDOWN'
 # Support Report
 
-At 09:21, QA reported that refreshing a booking page briefly displayed a booking reference and title belonging to another test account.
+At 09:21, QA reported a repeatable account-boundary failure in the test environment.
 
-The user was logged in normally. No elevated role was involved. QA could not reproduce it after navigating away.
+QA opened booking `8412` while signed in as synthetic Account A, copied the URL,
+and pasted it into a second browser that was already signed in as synthetic
+Account B. The second browser returned `200` and displayed Account A's booking.
+
+Both accounts were ordinary authenticated users. No elevated role, stolen
+password, or production customer data was involved.
 
 Do not include real customer information in the investigation channel.
 MARKDOWN);
@@ -96,10 +107,11 @@ MARKDOWN);
         $this->files->put($directory.'/timeline.md', <<<'MARKDOWN'
 # Timeline
 
-- **09:06** - QA authenticates as synthetic user 17.
-- **09:07-09:18** - Six booking requests appear in the edge and application logs.
-- **09:21** - QA reports seeing another account's booking.
-- **09:26** - Engineering begins reproduction with two valid users.
+- **09:06** - QA signs into synthetic Account A as actor 17.
+- **09:07** - Account A opens booking `8412` and copies its URL.
+- **09:08** - QA signs into synthetic Account B as actor 23 in a second browser.
+- **09:09** - The copied `8412` URL returns `200` in Account B's browser.
+- **09:21** - QA reports the repeatable cross-account response.
 - **09:34** - The endpoint is disabled while scope is investigated.
 MARKDOWN);
 
@@ -114,14 +126,14 @@ Authentication succeeded. Authorization never happened.
 
 ## What the Evidence Shows
 
-- Requests for booking identifiers 41 and 42 returned `200`.
-- Authentication succeeded for actor 17.
-- The logs do not connect actor 17 to each booking access.
+- Requests for booking identifiers `8411` and `8412` returned `200`.
+- Authentication succeeded for actors 17 and 23.
+- The access logs do not connect either actor to an individual booking request.
 
 ## What the Evidence Cannot Show
 
-- Which user received booking 42.
-- Whether booking 42 belonged to that user.
+- Which actor received booking `8412` on each request.
+- Whether booking `8412` belonged to that actor.
 - Which fields were serialized.
 - Whether other users exercised the same path.
 
@@ -145,6 +157,7 @@ MARKDOWN);
         $this->files->ensureDirectoryExists($directory);
 
         mt_srand($seed);
+        $sampleRate = 0.02;
 
         $base = CarbonImmutable::parse('2026-08-08T10:41:00-07:00');
         $paths = [
@@ -186,6 +199,7 @@ MARKDOWN);
                 'path' => $path,
                 'status' => $status,
                 'upstream_ms' => $duration,
+                'sample_rate' => $sampleRate,
             ];
             $denials[] = [
                 'timestamp' => $timestamp->addMilliseconds($duration)->toIso8601String(),
@@ -198,6 +212,7 @@ MARKDOWN);
                 'database_queries' => $databaseQueries,
                 'synchronous_audit_write' => true,
                 'duration_ms' => $duration,
+                'sample_rate' => $sampleRate,
             ];
         }
 
@@ -210,6 +225,23 @@ MARKDOWN);
             $frequency[] = "{$path},{$count}";
         }
         $this->files->put($directory.'/path-frequency.csv', implode("\n", $frequency)."\n");
+
+        $modeledRequestCount = (int) round($requestCount / $sampleRate);
+        $sampleWindowSeconds = round(max(1, $requestCount - 1) * 0.18, 2);
+        $this->files->put(
+            $directory.'/evidence-manifest.json',
+            json_encode([
+                'synthetic' => true,
+                'purpose' => 'masterclass incident simulation',
+                'jsonl_scope' => 'deterministic sampled slice of the hostile request stream',
+                'sample_rate' => $sampleRate,
+                'sampled_requests' => $requestCount,
+                'modeled_requests' => $modeledRequestCount,
+                'sample_window_seconds' => $sampleWindowSeconds,
+                'metrics_scope' => 'modeled full-stream service metrics, not a sum of the JSONL sample',
+                'seed' => $seed,
+            ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n",
+        );
 
         $this->files->put($directory.'/database-metrics.csv', <<<'CSV'
 timestamp,active_connections,write_ops_per_second,connection_wait_ms
@@ -241,6 +273,9 @@ CSV);
 3. Is PostgreSQL the root cause or a victim?
 4. What should be contained before the root cause is fully known?
 5. Which evidence can be shared publicly?
+
+The JSONL files are a deterministic sample. Read `evidence-manifest.json`
+before comparing request counts with the modeled service metrics.
 MARKDOWN);
 
         $this->files->put($directory.'/timeline.md', <<<'MARKDOWN'
@@ -259,15 +294,19 @@ MARKDOWN);
 
 ## Root Cause
 
-Unknown and invalid requests reached Laravel. Custom credential and audit middleware queried the database and synchronously wrote an audit record for every denial.
+Unknown paths reached Laravel's fallback route. Custom denial-audit middleware
+queried the database and synchronously wrote an audit record before returning
+each `404`. Valid partner requests failed as collateral when workers and database
+connections saturated.
 
-The authentication control worked. The rejection path was too expensive.
+The protected partner route continued to reject missing credentials correctly.
+The expensive fallback path made the service unavailable.
 
 ## Contributing Conditions
 
 - Common hostile paths were not rejected at the edge.
 - Per-IP limiting did not address distributed low-volume sources.
-- Every denial produced database work and a durable log write.
+- Every unknown-path denial produced database work and a durable log write.
 - Alerts focused on successful authentication failures rather than rejection cost.
 
 ## Corrective Layers
@@ -282,9 +321,35 @@ MARKDOWN);
         $this->files->put($directory.'/public-communication-draft.md', <<<'MARKDOWN'
 # Public Communication Exercise
 
-We are investigating elevated errors affecting the partner API. Requests may time out or return errors. We have applied mitigations and are monitoring recovery.
+We are investigating elevated errors affecting the partner API. Mitigations are
+in place, and service recovery is being monitored.
 
-At this time, we have not confirmed unauthorized access to credentials or customer data. The investigation remains active, and we will update this notice as facts are verified.
+Our investigation into unauthorized access is ongoing. We will provide the next
+update by **[time]**, or sooner if material facts change.
+MARKDOWN);
+
+        $this->files->put($directory.'/proposed-denial-event.json', <<<'JSON'
+{
+  "event": "partner.request_denied",
+  "request_id": "req_7f3...",
+  "route_family": "unknown_probe",
+  "outcome": "denied",
+  "reason_code": "unknown_path",
+  "source_fingerprint": "src_91a...",
+  "sample_rate": 0.02
+}
+JSON);
+
+        $this->files->put($directory.'/proposed-alert.md', <<<'MARKDOWN'
+# Proposed Alert: Expensive Rejection
+
+Page the API on-call when valid partner success rate falls while the PHP-FPM
+listen queue, database connection wait, and unknown-path cardinality rise.
+
+- **Owner:** API on-call
+- **First action:** apply the documented edge containment and preserve a sample
+- **Runbook:** rejection-outage
+- **Evidence:** no raw credentials, request bodies, or full headers
 MARKDOWN);
 
         return $directory;
