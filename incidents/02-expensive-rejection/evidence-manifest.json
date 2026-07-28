@@ -1,0 +1,13 @@
+{
+    "synthetic": true,
+    "purpose": "masterclass incident simulation",
+    "jsonl_scope": "deterministic sampled slice of the hostile request stream",
+    "sample_rate": 0.02,
+    "sampled_requests": 120,
+    "modeled_requests": 6000,
+    "sample_window_seconds": 21.42,
+    "metrics_scope": "modeled full-stream service metrics, not a sum of the JSONL sample",
+    "execution_scope": "PR #6 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect",
+    "runtime_note": "The local Laravel test uses SQLite. The FPM and Postgres values are teaching models, not measurements from that test run.",
+    "seed": 20260808
+}

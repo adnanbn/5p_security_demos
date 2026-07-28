@@ -1,13 +1,42 @@
-# Angular and Mobile Boundary
+# Frontend and Mobile Trust-Boundary Exercise
 
-Hiding a booking link or button is useful interface behavior, not authorization.
+The UI hides cancellation when the API says `canCancel` is false:
 
-Assume users can:
+```ts
+if (booking.canCancel) {
+  showCancelButton();
+}
 
-- Change route parameters and request bodies.
-- Replay a request outside the Angular application.
-- Inspect a mobile binary and recover public configuration.
-- Continue using an older mobile client during incident containment.
+await http.post(`/api/bookings/${booking.id}/cancel`, {
+  accountId: currentUser.accountId,
+});
+```
 
-The Laravel API must derive identity from the authenticated credential and
-enforce authorization on every requested booking.
+This may be reasonable interface code. It is not an authorization control.
+
+Assume a valid user can:
+
+1. Replay the request outside the Angular, Next.js, or mobile client.
+2. Change the booking identifier and body.
+3. Continue using an older mobile client after the UI changes.
+
+## Review the Change
+
+- **Risk:** A valid user may cancel another account's booking if the API trusts
+  the client-provided account identifier or the hidden button.
+- **Guard:** The Laravel or Django API derives identity from the authenticated
+  credential and authorizes the requested booking on the server.
+- **Proof:** A request test authenticates as one user, targets another user's
+  booking, expects a denial, and verifies that the booking state did not change.
+- **Gate:** The focused API test is required before merge.
+
+## Example Review Comment
+
+> Hiding this button is useful UX, but a caller can replay and modify the API
+> request. Please enforce cancellation authorization on the server and add a
+> valid-non-owner request test that proves the booking remains unchanged.
+
+The framework can reduce accidental HTML injection through default escaping,
+but raw-HTML APIs and unsafe DOM access still need review. Client-side
+validation improves feedback; the server remains the authority for identity,
+authorization, validation, and state changes.
