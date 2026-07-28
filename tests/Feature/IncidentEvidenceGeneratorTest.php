@@ -63,7 +63,33 @@ class IncidentEvidenceGeneratorTest extends TestCase
         $second = File::get($this->output.'/02-expensive-rejection/edge-access.jsonl');
 
         $this->assertSame($first, $second);
-        $this->assertCount(12, array_filter(explode("\n", $second)));
+        $edgeRecords = array_map(
+            fn (string $line): array => json_decode($line, true, flags: JSON_THROW_ON_ERROR),
+            array_filter(explode("\n", $second)),
+        );
+        $denialRecords = array_map(
+            fn (string $line): array => json_decode($line, true, flags: JSON_THROW_ON_ERROR),
+            array_filter(explode(
+                "\n",
+                File::get($this->output.'/02-expensive-rejection/laravel-denials.jsonl'),
+            )),
+        );
+
+        $this->assertCount(12, $edgeRecords);
+        $this->assertCount(12, $denialRecords);
+
+        foreach ($edgeRecords as $index => $edgeRecord) {
+            $denialRecord = $denialRecords[$index];
+            $isPartnerCredentialAttempt = $edgeRecord['path'] === '/api/partner/catalog';
+
+            $this->assertSame($isPartnerCredentialAttempt ? 401 : 404, $edgeRecord['status']);
+            $this->assertSame(
+                $isPartnerCredentialAttempt ? 'credential_denied' : 'unknown_route_denied',
+                $denialRecord['event'],
+            );
+            $this->assertSame($isPartnerCredentialAttempt ? 0 : 3, $denialRecord['database_queries']);
+        }
+
         $this->assertSame(
             0.02,
             json_decode(
@@ -71,6 +97,14 @@ class IncidentEvidenceGeneratorTest extends TestCase
                 true,
                 flags: JSON_THROW_ON_ERROR,
             )['sample_rate'],
+        );
+        $this->assertStringContainsString(
+            'teaching models',
+            json_decode(
+                File::get($this->output.'/02-expensive-rejection/evidence-manifest.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['runtime_note'],
         );
     }
 }

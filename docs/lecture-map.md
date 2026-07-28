@@ -15,7 +15,7 @@
 | Frontend and mobile trust exercise | 27 | [`client-boundary.md`](../examples/angular-mobile/client-boundary.md) |
 | Expensive fallback incident | 30-39 | [`incidents/02-expensive-rejection`](../incidents/02-expensive-rejection) |
 | Vulnerable fallback middleware | 35 | [`scenario/incident-02-rejection-outage`](https://github.com/adnanbn/5p_security_demos/tree/scenario/incident-02-rejection-outage) |
-| Before/after edge configuration | 36-37 | [`infrastructure/nginx`](../infrastructure/nginx) |
+| Before/after edge configuration | 36 | [`infrastructure/nginx`](../infrastructure/nginx) |
 | Proposed structured event and alert | 38 | [`incidents/02-expensive-rejection`](../incidents/02-expensive-rejection) |
 | Public communication exercise | 39 | [`public-communication-draft.md`](../incidents/02-expensive-rejection/public-communication-draft.md) |
 | Security Upgrade PR | 41 | [`security-week-objective.md`](security-week-objective.md) |

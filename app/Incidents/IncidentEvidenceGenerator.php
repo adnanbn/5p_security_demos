@@ -163,6 +163,7 @@ MARKDOWN);
         $paths = [
             '/.env',
             '/.git/config',
+            '/api/partner/catalog',
             '/api/.env',
             '/api/backup.zip',
             '/api/config',
@@ -187,8 +188,9 @@ MARKDOWN);
             $pathCounts[$path]++;
             $timestamp = $base->addMilliseconds($index * 180);
             $requestId = sprintf('i2-req-%05d', $index + 1);
-            $status = str_starts_with($path, '/api/') ? 401 : 404;
-            $databaseQueries = $status === 401 ? 2 : 1;
+            $isPartnerCredentialAttempt = $path === '/api/partner/catalog';
+            $status = $isPartnerCredentialAttempt ? 401 : 404;
+            $databaseQueries = $isPartnerCredentialAttempt ? 0 : 3;
             $duration = 18 + ($databaseQueries * 8) + mt_rand(0, 18);
 
             $edge[] = [
@@ -203,7 +205,7 @@ MARKDOWN);
             ];
             $denials[] = [
                 'timestamp' => $timestamp->addMilliseconds($duration)->toIso8601String(),
-                'event' => $status === 401
+                'event' => $isPartnerCredentialAttempt
                     ? 'credential_denied'
                     : 'unknown_route_denied',
                 'request_id' => $requestId,
@@ -239,6 +241,8 @@ MARKDOWN);
                 'modeled_requests' => $modeledRequestCount,
                 'sample_window_seconds' => $sampleWindowSeconds,
                 'metrics_scope' => 'modeled full-stream service metrics, not a sum of the JSONL sample',
+                'execution_scope' => 'PR #6 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect',
+                'runtime_note' => 'The local Laravel test uses SQLite. The FPM and Postgres values are teaching models, not measurements from that test run.',
                 'seed' => $seed,
             ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n",
         );
@@ -330,7 +334,7 @@ MARKDOWN);
 
         $this->files->put($directory.'/proposed-denial-event.json', <<<'JSON'
 {
-  "event": "partner.request_denied",
+  "event": "api.request_denied",
   "request_id": "req_7f3...",
   "route_family": "unknown_probe",
   "outcome": "denied",
