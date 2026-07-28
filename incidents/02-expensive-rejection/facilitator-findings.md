@@ -2,15 +2,19 @@
 
 ## Root Cause
 
-Unknown and invalid requests reached Laravel. Custom credential and audit middleware queried the database and synchronously wrote an audit record for every denial.
+Unknown paths reached Laravel's fallback route. Custom denial-audit middleware
+queried the database and synchronously wrote an audit record before returning
+each `404`. Valid partner requests failed as collateral when workers and database
+connections saturated.
 
-The authentication control worked. The rejection path was too expensive.
+The protected partner route continued to reject missing credentials correctly.
+The expensive fallback path made the service unavailable.
 
 ## Contributing Conditions
 
 - Common hostile paths were not rejected at the edge.
 - Per-IP limiting did not address distributed low-volume sources.
-- Every denial produced database work and a durable log write.
+- Every unknown-path denial produced database work and a durable log write.
 - Alerts focused on successful authentication failures rather than rejection cost.
 
 ## Corrective Layers

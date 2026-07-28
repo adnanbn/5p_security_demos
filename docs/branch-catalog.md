@@ -10,10 +10,11 @@ failure. Every `scenario/*` branch represents a fuller incident condition.
 | [`demo/03-vulnerable-dependency`](https://github.com/adnanbn/5p_security_demos/tree/demo/03-vulnerable-dependency) | [PR #3](https://github.com/adnanbn/5p_security_demos/pull/3) | OSV dependency scan | Known vulnerable dependency evidence |
 | [`demo/04-sensitive-logging`](https://github.com/adnanbn/5p_security_demos/tree/demo/04-sensitive-logging) | [PR #4](https://github.com/adnanbn/5p_security_demos/pull/4) | Semgrep security rules | Logs can become the second leak |
 | [`demo/05-unpinned-action`](https://github.com/adnanbn/5p_security_demos/tree/demo/05-unpinned-action) | [PR #5](https://github.com/adnanbn/5p_security_demos/pull/5) | Audit GitHub Actions | CI is an executable supply-chain boundary |
-| [`scenario/incident-01-cross-user`](https://github.com/adnanbn/5p_security_demos/tree/scenario/incident-01-cross-user) | [PR #1](https://github.com/adnanbn/5p_security_demos/pull/1) | Laravel tests | First incident retrospective |
+| [`scenario/incident-01-cross-user`](https://github.com/adnanbn/5p_security_demos/tree/scenario/incident-01-cross-user) | No draft PR; use PR #1 above | Laravel tests | Historical full-scenario branch for incident 1 |
 | [`scenario/incident-02-rejection-outage`](https://github.com/adnanbn/5p_security_demos/tree/scenario/incident-02-rejection-outage) | [PR #6](https://github.com/adnanbn/5p_security_demos/pull/6) | Rejection-path test | Second incident retrospective |
 
-Do not merge these branches. Their draft pull requests are teaching fixtures.
+Do not merge the demo or scenario branches. The draft pull requests are teaching
+fixtures and intentionally remain red.
 
 ## Demonstration Pattern
 

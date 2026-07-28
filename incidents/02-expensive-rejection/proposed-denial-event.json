@@ -1,0 +1,9 @@
+{
+  "event": "partner.request_denied",
+  "request_id": "req_7f3...",
+  "route_family": "unknown_probe",
+  "outcome": "denied",
+  "reason_code": "unknown_path",
+  "source_fingerprint": "src_91a...",
+  "sample_rate": 0.02
+}

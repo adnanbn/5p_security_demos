@@ -1,0 +1,11 @@
+{
+    "synthetic": true,
+    "purpose": "masterclass incident simulation",
+    "jsonl_scope": "deterministic sampled slice of the hostile request stream",
+    "sample_rate": 0.02,
+    "sampled_requests": 120,
+    "modeled_requests": 6000,
+    "sample_window_seconds": 21.42,
+    "metrics_scope": "modeled full-stream service metrics, not a sum of the JSONL sample",
+    "seed": 20260808
+}

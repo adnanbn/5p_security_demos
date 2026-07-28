@@ -8,14 +8,14 @@ Authentication succeeded. Authorization never happened.
 
 ## What the Evidence Shows
 
-- Requests for booking identifiers 41 and 42 returned `200`.
-- Authentication succeeded for actor 17.
-- The logs do not connect actor 17 to each booking access.
+- Requests for booking identifiers `8411` and `8412` returned `200`.
+- Authentication succeeded for actors 17 and 23.
+- The access logs do not connect either actor to an individual booking request.
 
 ## What the Evidence Cannot Show
 
-- Which user received booking 42.
-- Whether booking 42 belonged to that user.
+- Which actor received booking `8412` on each request.
+- Whether booking `8412` belonged to that actor.
 - Which fields were serialized.
 - Whether other users exercised the same path.
 

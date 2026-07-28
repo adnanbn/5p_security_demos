@@ -12,6 +12,9 @@ Primary sources used by the masterclass:
 - [Laravel rate limiting](https://laravel.com/docs/13.x/rate-limiting)
 - [Laravel logging](https://laravel.com/docs/13.x/logging)
 - [Django authorization](https://docs.djangoproject.com/en/6.0/topics/auth/default/)
+- [Angular security](https://angular.dev/best-practices/security)
+- [React: dangerously setting inner HTML](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html)
+- [OWASP Mobile Application Security](https://mas.owasp.org/)
 
 ## CI And Supply Chain
 
@@ -22,9 +25,10 @@ Primary sources used by the masterclass:
 - [SLSA](https://slsa.dev/)
 - [OpenSSF Scorecard](https://scorecard.dev/)
 - [GitHub: Our plan for a more secure npm supply chain](https://github.blog/security/supply-chain-security/our-plan-for-a-more-secure-npm-supply-chain/)
+- [GitHub Actions security hardening](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
 
 ## AI And Incident Response
 
-- [Anthropic: Project Glasswing initial update](https://www.anthropic.com/research/glasswing-initial-update)
-- [Anthropic: Claude Fable 5 and Claude Mythos 5](https://www.anthropic.com/news/claude-fable-5-mythos-5)
+- [OpenAI: Hugging Face model-evaluation security incident](https://openai.com/index/hugging-face-model-evaluation-security-incident/)
+- [Hugging Face: July 2026 security incident](https://huggingface.co/blog/security-incident-july-2026)
 - [NIST SP 800-61 Revision 3](https://csrc.nist.gov/pubs/sp/800/61/r3/final)
