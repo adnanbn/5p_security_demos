@@ -78,6 +78,31 @@ class IncidentEvidenceGenerator
                 'request_id' => 'i1-login-002',
             ],
         ]);
+        $this->files->put(
+            $directory.'/evidence-manifest.json',
+            json_encode([
+                'synthetic' => true,
+                'incident_id' => 'INCIDENT-01',
+                'purpose' => 'masterclass incident simulation',
+                'generation_command' => 'php artisan masterclass:replay 1',
+                'file_roles' => [
+                    'generated_evidence' => [
+                        'edge-access.jsonl',
+                        'application.jsonl',
+                        'security-events.jsonl',
+                    ],
+                    'participant_materials' => [
+                        'support-report.md',
+                        'participant-prompts.md',
+                        'timeline.md',
+                    ],
+                    'facilitator_reveal' => [
+                        'facilitator-findings.md',
+                    ],
+                ],
+                'safety_note' => 'All identities, records, addresses, and events are synthetic. Do not replace them with customer or employer evidence.',
+            ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n",
+        );
 
         $this->files->put($directory.'/support-report.md', <<<'MARKDOWN'
 # Support Report
@@ -234,15 +259,41 @@ MARKDOWN);
             $directory.'/evidence-manifest.json',
             json_encode([
                 'synthetic' => true,
+                'incident_id' => 'INCIDENT-02',
                 'purpose' => 'masterclass incident simulation',
+                'generation_command' => "php artisan masterclass:replay 2 --requests={$requestCount} --seed={$seed}",
                 'jsonl_scope' => 'deterministic sampled slice of the hostile request stream',
                 'sample_rate' => $sampleRate,
                 'sampled_requests' => $requestCount,
                 'modeled_requests' => $modeledRequestCount,
                 'sample_window_seconds' => $sampleWindowSeconds,
                 'metrics_scope' => 'modeled full-stream service metrics, not a sum of the JSONL sample',
-                'execution_scope' => 'PR #6 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect',
+                'execution_scope' => 'AVAILABILITY-01 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect',
                 'runtime_note' => 'The local Laravel test uses SQLite. The FPM and Postgres values are teaching models, not measurements from that test run.',
+                'file_roles' => [
+                    'generated_sample' => [
+                        'edge-access.jsonl',
+                        'laravel-denials.jsonl',
+                        'path-frequency.csv',
+                    ],
+                    'modeled_metrics' => [
+                        'database-metrics.csv',
+                        'php-fpm-metrics.csv',
+                    ],
+                    'participant_materials' => [
+                        'participant-prompts.md',
+                        'timeline.md',
+                    ],
+                    'facilitator_reveal' => [
+                        'facilitator-findings.md',
+                    ],
+                    'follow_up_exercises' => [
+                        'proposed-alert.md',
+                        'proposed-denial-event.json',
+                        'public-communication-draft.md',
+                    ],
+                ],
+                'safety_note' => 'All hosts, addresses, traffic, credentials, and metrics are synthetic. The replay command makes no external requests.',
                 'seed' => $seed,
             ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n",
         );

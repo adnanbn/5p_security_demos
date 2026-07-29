@@ -80,7 +80,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check semgrep==1.171.0
 
       - name: Scan application code
-        run: semgrep scan --config .semgrep/security.yml --error --metrics=off app routes config
+        run: semgrep scan --config .semgrep/security.yml --error --metrics=off app routes config examples
 
   osv:
     name: OSV dependency scan
