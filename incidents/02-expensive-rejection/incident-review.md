@@ -26,13 +26,14 @@
 ## 2. Executive Summary
 
 Public scrapers probed common secret, backup, debug, Git, and old PHP paths.
-The probes did not obtain access and received `401` or `404`, yet valid partner
-requests began timing out. Unknown paths reached Laravel's fallback route,
-where custom denial-audit middleware performed database work and a synchronous
-log write before returning each `404`. Edge containment reduced the active
-load; the long-term correction moves cheap rejection forward, bounds denial
-cost and evidence, and alerts on valid-customer impact rather than status codes
-alone.
+The sampled probes received `401` or `404`, and this evidence shows no
+successful access; it does not establish what happened outside the synthetic
+sample. Valid partner requests began timing out. Unknown paths reached
+Laravel's fallback route, where custom denial-audit middleware performed
+database work and a synchronous log write before returning each `404`. Edge
+containment reduced the active load; the long-term correction moves cheap
+rejection forward, bounds denial cost and evidence, and alerts on valid-customer
+impact rather than status codes alone.
 
 ## 3. Impact and Scope
 
@@ -86,11 +87,11 @@ proof of a breach and not proof that no breach occurred.
 
 | Step | How was this possible? | Evidence | Condition or control gap |
 | --- | --- | --- | --- |
-| Impact | Valid partner requests timed out. | Modeled FPM queue, database wait, and incident timeline. | Shared workers and database connections were exhausted. |
+| Impact | Valid partner requests timed out. | Modeled FPM queue, database wait, and incident timeline. | PHP-FPM reached its configured worker maximum while database contention and connection wait rose. |
 | 1 | Rejected probes consumed those shared resources. | Sampled denial evidence and modeled saturation signals rise together. | A failed request did not have predictable bounded cost. |
 | 2 | Unknown paths reached Laravel's fallback and performed a database read, cache write, and synchronous security-log write before `404`. | [`facilitator-findings.md`](facilitator-findings.md) and [PR #6](https://github.com/adnanbn/5p_security_demos/pull/6). | Durable denial auditing ran in the synchronous request path. |
 | 3 | Common hostile paths were allowed through the permissive edge to application workers. | [Before-state Nginx configuration](../../infrastructure/nginx/permissive-api-before.conf). | Cheap rejection was not placed at the earliest practical layer. |
-| 4 | Per-IP thinking did not address distributed low-volume sources, and every denial produced work. | High path diversity and contributing conditions. | Limits were not multidimensional or pressure-aware. |
+| 4 | Traffic came from multiple synthetic source addresses, and every denial produced work. | The fixture rotates across five sources while path diversity and shared-resource pressure rise. | A single source dimension was insufficient, and limits were not multidimensional or pressure-aware. |
 | 5 | Alerts emphasized authentication outcomes rather than rejection cost and valid-customer impact. | Existing and proposed alert discussion. | Detection did not correlate denial behavior with shared-resource saturation. |
 
 The causal chain is not "the API needed more servers." Additional capacity
@@ -102,8 +103,8 @@ failure mode and could increase pressure on Postgres.
 - **Technical design:** Synchronous database and logging work ran before an
   unknown-path `404`.
 - **Edge configuration:** Common probes reached PHP-FPM and Laravel.
-- **Rate limiting:** A single source dimension was insufficient for distributed
-  low-volume traffic.
+- **Rate limiting:** A single source dimension was insufficient for repeated
+  multi-source probing in the fixture.
 - **Observability:** Status codes looked correct while valid users were failing.
 - **Evidence design:** Durable evidence was not sampled or degraded under
   pressure.
@@ -170,8 +171,8 @@ An appropriate first partner update is:
 - Correct-looking status codes created a false sense that controls were working
   safely.
 - The denial path performed synchronous shared-resource work.
-- Per-IP limiting and raw denial counts did not explain distributed behavior or
-  customer impact.
+- Per-IP limiting and raw denial counts did not explain multi-source behavior
+  or customer impact.
 
 ### Luck That Should Become a Control
 
@@ -186,7 +187,7 @@ saturation. That relationship should become an owned alert and runbook.
 | AVAIL-01-B | Common probes consume PHP workers | Validate and deploy cheap edge rejection for known-sensitive paths | Prevent | Edge owner | Environment-specific | Staging test confirms matching and acceptable false positives | Edge configuration review | Proposed teaching configuration |
 | AVAIL-01-C | Repeated evidence writes can amplify load | Use structured sampling and graceful degradation for repetitive denials | Mitigate | Platform owner | Before production adoption | Load test keeps evidence bounded under pressure | Logging test and runbook | Proposed event design |
 | AVAIL-01-D | Denial status hides valid-customer failure | Alert on partner success, FPM queue, database wait, path cardinality, and denial cost together | Detect | Service owner | Before production adoption | Synthetic exercise fires the alert and names a first action | Proposed alert and runbook | Proposed |
-| AVAIL-01-E | One source dimension misses distributed traffic | Apply route-, identity-, tenant-, source-, and pressure-aware limits where appropriate | Prevent | API and platform owners | Threat-model dependent | Controlled test proves valid traffic retains capacity | Rate-limit tests and dashboard | Partially demonstrated |
+| AVAIL-01-E | One source dimension misses multi-source traffic | Apply route-, identity-, tenant-, source-, and pressure-aware limits where appropriate | Prevent | API and platform owners | Threat-model dependent | Controlled test proves valid traffic retains capacity | Rate-limit tests and dashboard | Partially demonstrated |
 
 ## 12. Closure
 
