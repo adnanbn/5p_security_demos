@@ -19,3 +19,17 @@ rules:
         - app/
         - routes/
     pattern: env(...)
+
+  - id: frontend-untrusted-html-sink
+    message: Render untrusted content as text; raw HTML and trust-bypass APIs require a reviewed sanitization boundary.
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - /examples/**/*.ts
+        - /examples/**/*.tsx
+    pattern-either:
+      - pattern-regex: 'dangerouslySetInnerHTML\s*='
+      - pattern-regex: '\.bypassSecurityTrustHtml\s*\('
+      - pattern-regex: '\.innerHTML\s*='

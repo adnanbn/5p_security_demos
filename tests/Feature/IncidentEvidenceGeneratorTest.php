@@ -107,4 +107,49 @@ class IncidentEvidenceGeneratorTest extends TestCase
             )['runtime_note'],
         );
     }
+
+    public function test_committed_incident_evidence_matches_the_default_replay(): void
+    {
+        $this->artisan('masterclass:replay', [
+            'incident' => 1,
+            '--output' => $this->output,
+        ])->assertSuccessful();
+        $this->artisan('masterclass:replay', [
+            'incident' => 2,
+            '--output' => $this->output,
+            '--requests' => 120,
+            '--seed' => 20260808,
+        ])->assertSuccessful();
+
+        $generatedFiles = [
+            '01-cross-user-access/application.jsonl',
+            '01-cross-user-access/edge-access.jsonl',
+            '01-cross-user-access/evidence-manifest.json',
+            '01-cross-user-access/facilitator-findings.md',
+            '01-cross-user-access/participant-prompts.md',
+            '01-cross-user-access/security-events.jsonl',
+            '01-cross-user-access/support-report.md',
+            '01-cross-user-access/timeline.md',
+            '02-expensive-rejection/database-metrics.csv',
+            '02-expensive-rejection/edge-access.jsonl',
+            '02-expensive-rejection/evidence-manifest.json',
+            '02-expensive-rejection/facilitator-findings.md',
+            '02-expensive-rejection/laravel-denials.jsonl',
+            '02-expensive-rejection/participant-prompts.md',
+            '02-expensive-rejection/path-frequency.csv',
+            '02-expensive-rejection/php-fpm-metrics.csv',
+            '02-expensive-rejection/proposed-alert.md',
+            '02-expensive-rejection/proposed-denial-event.json',
+            '02-expensive-rejection/public-communication-draft.md',
+            '02-expensive-rejection/timeline.md',
+        ];
+
+        foreach ($generatedFiles as $relativePath) {
+            $this->assertSame(
+                File::get($this->output.'/'.$relativePath),
+                File::get(base_path('incidents/'.$relativePath)),
+                "Committed incident evidence drifted: {$relativePath}",
+            );
+        }
+    }
 }

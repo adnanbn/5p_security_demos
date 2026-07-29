@@ -26,3 +26,13 @@ object ownership. The valid-non-owner feature test expresses that product rule.
 The GitHub links remain private until the repository release checklist is
 completed. Keep the links in the shared deck only if the repository will be
 released to participants.
+
+## Repository-Only Extensions
+
+These examples support follow-up questions and self-guided practice without
+adding lecture slides:
+
+- [`INPUT-01`](../demos/INPUT-01/README.md) - over-posting server-owned fields
+- [`WEBHOOK-01`](../demos/WEBHOOK-01/README.md) - signed webhook replay
+- [`SSRF-01`](../demos/SSRF-01/README.md) - caller-controlled outbound requests
+- [`XSS-01`](../demos/XSS-01/README.md) - explicit frontend HTML sinks
