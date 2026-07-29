@@ -31,8 +31,12 @@ and ask which action item contains the strongest proof.
 php artisan masterclass:replay 2 --requests=120 --seed=20260808
 ```
 
-Begin with the timeline, edge logs, and infrastructure metrics. Reveal the
-Laravel denial logs after participants have formed initial hypotheses.
+Read the
+[`evidence-manifest.json`](../incidents/02-expensive-rejection/evidence-manifest.json)
+first so the deterministic 2% request sample is not compared directly with the
+modeled full-stream metrics. Then begin with the timeline, edge logs, and
+infrastructure metrics. Reveal the Laravel denial logs after participants have
+formed initial hypotheses.
 After the reveal, use the completed
 [`incident-review.md`](../incidents/02-expensive-rejection/incident-review.md)
 to connect the Five Hows, layered resolution, communication, and action items.

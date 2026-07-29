@@ -13,7 +13,8 @@ The expensive fallback path made the service unavailable.
 ## Contributing Conditions
 
 - Common hostile paths were not rejected at the edge.
-- Per-IP limiting did not address distributed low-volume sources.
+- Per-IP limiting alone did not address repeated probes from the fixture's
+  multiple synthetic source addresses.
 - Every unknown-path denial produced database work and a durable log write.
 - Alerts focused on successful authentication failures rather than rejection cost.
 

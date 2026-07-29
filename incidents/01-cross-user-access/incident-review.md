@@ -87,7 +87,7 @@ was affected.
 | Impact | Account B received Account A's booking. | QA report and repeated `200` for booking `8412`. | Per-user confidentiality was not enforced on the request. |
 | 1 | The endpoint returned a booking found by its global numeric identifier. | Deliberate failure in [`AUTHZ-01`](../../demos/AUTHZ-01/README.md). | The data lookup did not begin from the authenticated actor's relationship. |
 | 2 | Login succeeded, but no equivalent ownership or policy decision followed. | [`facilitator-findings.md`](facilitator-findings.md). | Authentication was treated as if it were authorization. |
-| 3 | Existing proof covered the owner and anonymous caller, not a valid non-owner. | The deliberate branch makes the two-user tests fail. | The product boundary was not encoded in a negative test. |
+| 3 | At incident time, existing proof covered the owner and anonymous caller, not a valid non-owner. | PR #1 reenacts the missing boundary by making the later two-user regression tests fail. | The product boundary was not encoded in a negative test before release. |
 | 4 | Generic scanners remained green because the code was syntactically valid and used no generic dangerous primitive. | [PR #1](https://github.com/adnanbn/5p_security_demos/pull/1). | CI could not infer the product-specific ownership rule. |
 | 5 | Historical logs recorded requests and statuses without actor-to-resource authorization context. | Supplied edge and application logs. | Evidence could not answer scope questions quickly. |
 
@@ -152,22 +152,24 @@ occurred when the logs cannot prove either statement.
 
 ### Hurt or Delayed the Response
 
-- The negative authorization case was missing before release.
+- The negative authorization case was missing at incident time; PR #1 is a
+  post-remediation regression reenactment.
 - Generic scanners could not express the product rule.
 - Logs could not connect actor, owner, resource, and decision.
 
 ### Luck That Should Become a Control
 
-QA found the issue through ordinary testing. That discovery should become a
-required two-user regression test rather than remain dependent on chance.
+QA found the issue through ordinary testing. That discovery should become an
+automated two-user regression check, and a required merge gate where repository
+enforcement is available, rather than remain dependent on chance.
 
 ## 11. Action Items
 
 | ID | Risk or condition | Action | Type | Owner | Due | Verifiable proof | Gate, alert, or runbook | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | AUTHZ-01-A | Global lookup bypasses ownership | Restore actor-scoped lookup and retain policy enforcement | Prevent | Booking API owner | Before re-enable | Owner receives `200`; non-owner receives `404` | Laravel tests | Complete on secure `main` |
-| AUTHZ-01-B | Product boundary is absent from CI | Add owner, anonymous, and valid-non-owner feature tests | Prevent | Booking API owner | Before re-enable | Focused test fails on PR #1 and passes on `main` | Required Laravel test job | Complete |
-| AUTHZ-01-C | Logs cannot answer scope questions | Record request ID, actor, resource, outcome, and reason without booking contents | Detect | Platform and API owners | Before release | Structured allowed and denied events | Log contract test and alert design | Complete in demo |
+| AUTHZ-01-B | Product boundary is absent from CI | Add owner, anonymous, and valid-non-owner feature tests | Prevent | Booking API owner | Before re-enable | Focused test fails on PR #1 and passes on `main` | Automated Laravel PR check; require it when branch enforcement is available | Implemented as PR check; enforcement pending |
+| AUTHZ-01-C | Logs cannot answer scope questions | Record request ID, actor, resource, outcome, and reason without booking contents | Detect | Platform and API owners | Before release | Structured allowed and denied events | Authorization-event contract test and alert design | Partial: event implemented; contract test and alert pending |
 | AUTHZ-01-D | Reviewers may equate login with permission | Add the review question: "What can a valid user do that they should not be able to do?" | Prevent | Engineering lead | Next review cycle | Question appears in PR guidance and review examples | PR review practice | Documented |
 
 ## 12. Closure
