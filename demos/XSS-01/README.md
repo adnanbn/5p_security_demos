@@ -26,7 +26,7 @@ application.
 ## Intentional Failure
 
 - **Branch:** `demo/09-unsafe-html`
-- **Draft PR:** created as part of the demo rollout
+- **Draft PR:** [PR #11](https://github.com/adnanbn/5p_security_demos/pull/11)
 - **Expected red gate:** Semgrep security rules
 - **Expected finding:** `frontend-untrusted-html-sink` identifies a deliberate
   raw-HTML or trust-bypass API

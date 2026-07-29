@@ -28,7 +28,7 @@ test-only secret and make no external requests.
 ## Intentional Failure
 
 - **Branch:** `demo/07-webhook-replay`
-- **Draft PR:** created as part of the demo rollout
+- **Draft PR:** [PR #9](https://github.com/adnanbn/5p_security_demos/pull/9)
 - **Expected red gate:** Laravel tests
 - **Expected finding:** an unconditional cache write accepts the same correctly
   signed event more than once
