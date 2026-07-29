@@ -27,5 +27,15 @@ class AppServiceProvider extends ServiceProvider
                 max(1, (int) config('security.partner_rate_limit_per_minute')),
             )->by($request->ip() ?? 'unknown');
         });
+
+        RateLimiter::for('preview', function (Request $request): Limit {
+            return Limit::perMinute(
+                max(1, (int) config('security.preview_rate_limit_per_minute')),
+            )->by((string) (
+                $request->user()?->getAuthIdentifier()
+                ?? $request->ip()
+                ?? 'unknown'
+            ));
+        });
     }
 }

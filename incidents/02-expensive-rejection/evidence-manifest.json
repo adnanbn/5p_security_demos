@@ -1,13 +1,39 @@
 {
     "synthetic": true,
+    "incident_id": "INCIDENT-02",
     "purpose": "masterclass incident simulation",
+    "generation_command": "php artisan masterclass:replay 2 --requests=120 --seed=20260808",
     "jsonl_scope": "deterministic sampled slice of the hostile request stream",
     "sample_rate": 0.02,
     "sampled_requests": 120,
     "modeled_requests": 6000,
     "sample_window_seconds": 21.42,
     "metrics_scope": "modeled full-stream service metrics, not a sum of the JSONL sample",
-    "execution_scope": "PR #6 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect",
+    "execution_scope": "AVAILABILITY-01 executes the unknown-route failure; the FPM and Postgres CSVs model its production-scale effect",
     "runtime_note": "The local Laravel test uses SQLite. The FPM and Postgres values are teaching models, not measurements from that test run.",
+    "file_roles": {
+        "generated_sample": [
+            "edge-access.jsonl",
+            "laravel-denials.jsonl",
+            "path-frequency.csv"
+        ],
+        "modeled_metrics": [
+            "database-metrics.csv",
+            "php-fpm-metrics.csv"
+        ],
+        "participant_materials": [
+            "participant-prompts.md",
+            "timeline.md"
+        ],
+        "facilitator_reveal": [
+            "facilitator-findings.md"
+        ],
+        "follow_up_exercises": [
+            "proposed-alert.md",
+            "proposed-denial-event.json",
+            "public-communication-draft.md"
+        ]
+    },
+    "safety_note": "All hosts, addresses, traffic, credentials, and metrics are synthetic. The replay command makes no external requests.",
     "seed": 20260808
 }
