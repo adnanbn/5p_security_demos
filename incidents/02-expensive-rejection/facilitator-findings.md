@@ -4,8 +4,8 @@
 
 Unknown paths reached Laravel's fallback route. Custom denial-audit middleware
 queried the database and synchronously wrote an audit record before returning
-each `404`. Valid partner requests failed as collateral when workers and database
-connections saturated.
+each `404`. Valid partner requests failed as collateral when all workers were
+active and database connection wait rose.
 
 The protected partner route continued to reject missing credentials correctly.
 The expensive fallback path made the service unavailable.
