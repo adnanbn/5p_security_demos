@@ -30,7 +30,7 @@ destination, so no real network traffic occurs.
 ## Intentional Failure
 
 - **Branch:** `demo/08-ssrf-outbound`
-- **Draft PR:** created as part of the demo rollout
+- **Draft PR:** [PR #10](https://github.com/adnanbn/5p_security_demos/pull/10)
 - **Expected red gate:** Laravel tests
 - **Expected finding:** a user-supplied absolute URL selects a synthetic
   link-local destination
