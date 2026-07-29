@@ -30,7 +30,7 @@ proves protected fields remain unchanged.
 ## Intentional Failure
 
 - **Branch:** `demo/06-over-posting`
-- **Draft PR:** created as part of the demo rollout
+- **Draft PR:** [PR #8](https://github.com/adnanbn/5p_security_demos/pull/8)
 - **Expected red gate:** Laravel tests
 - **Expected finding:** a valid owner can over-post server-owned fields
 
