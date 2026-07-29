@@ -25,8 +25,9 @@ After the group forms initial hypotheses, reveal
 [`laravel-denials.jsonl`](laravel-denials.jsonl) and correlate its request IDs
 with the edge sample.
 
-Do not open [`facilitator-findings.md`](facilitator-findings.md) until the group
-has discussed likely causes, containment, evidence limits, and communication.
+Do not open [`facilitator-findings.md`](facilitator-findings.md) or the
+completed [`incident-review.md`](incident-review.md) until the group has
+discussed likely causes, containment, evidence limits, and communication.
 
 ## What Each File Is
 
@@ -37,6 +38,7 @@ has discussed likely causes, containment, evidence limits, and communication.
 | Modeled metrics | `php-fpm-metrics.csv`, `database-metrics.csv` | Plausible teaching model, not observed output from the local test |
 | Participant material | `timeline.md`, `participant-prompts.md` | Scenario context and investigation questions |
 | Facilitator-only reveal | `facilitator-findings.md` | Designed root cause, contributing conditions, and corrective layers |
+| Completed incident review | `incident-review.md` | Post-investigation walkthrough of timeline, Five Hows, resolution, communication, and action items |
 | Proposed follow-up | `proposed-alert.md`, `proposed-denial-event.json`, `public-communication-draft.md` | Remediation and communication exercises, not incident evidence |
 
 ## Replay

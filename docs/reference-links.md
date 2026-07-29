@@ -32,3 +32,5 @@ Primary sources used by the masterclass:
 - [OpenAI: Hugging Face model-evaluation security incident](https://openai.com/index/hugging-face-model-evaluation-security-incident/)
 - [Hugging Face: July 2026 security incident](https://huggingface.co/blog/security-incident-july-2026)
 - [NIST SP 800-61 Revision 3](https://csrc.nist.gov/pubs/sp/800/61/r3/final)
+- [Google SRE: Postmortem practices for incident management](https://sre.google/workbook/postmortem-culture/)
+- [PagerDuty incident postmortem template](https://response.pagerduty.com/after/post_mortem_template/)

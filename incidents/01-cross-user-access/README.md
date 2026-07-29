@@ -16,8 +16,9 @@ Everything in this directory is synthetic.
 5. [`security-events.jsonl`](security-events.jsonl)
 6. [`participant-prompts.md`](participant-prompts.md)
 
-Do not open [`facilitator-findings.md`](facilitator-findings.md) until the group
-has discussed containment, scope, missing evidence, and a regression test.
+Do not open [`facilitator-findings.md`](facilitator-findings.md) or the
+completed [`incident-review.md`](incident-review.md) until the group has
+discussed containment, scope, missing evidence, and a regression test.
 
 ## What Each File Is
 
@@ -27,6 +28,7 @@ has discussed containment, scope, missing evidence, and a regression test.
 | Participant context | `support-report.md`, `timeline.md` | Generated scenario narrative, not independent telemetry |
 | Participant prompts | `participant-prompts.md` | Questions for the investigation |
 | Facilitator-only reveal | `facilitator-findings.md` | Designed root cause, evidence limits, and corrective layers |
+| Completed incident review | `incident-review.md` | Post-investigation walkthrough of timeline, Five Hows, resolution, and action items |
 | Modeled metrics | None | This incident does not use modeled infrastructure metrics |
 
 ## Replay

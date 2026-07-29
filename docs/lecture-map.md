@@ -2,7 +2,9 @@
 
 | Repository demonstration | Slides | Exact source |
 | --- | --- | --- |
+| Flexible incident-review method | 3, 4-13, 30-40 | [`incident-review-template.md`](incident-review-template.md) |
 | Cross-account booking incident | 4-13 | [`incidents/01-cross-user-access`](../incidents/01-cross-user-access) |
+| Completed cross-account incident review | 4-13 | [`incident-review.md`](../incidents/01-cross-user-access/incident-review.md) |
 | Vulnerable global lookup | 8, 11 | [`demo/01-authz-cross-user`](https://github.com/adnanbn/5p_security_demos/tree/demo/01-authz-cross-user) |
 | Secure scoped query and policy | 8-10 | [`BookingController.php`](../app/Http/Controllers/BookingController.php), [`BookingPolicy.php`](../app/Policies/BookingPolicy.php) |
 | Valid-non-owner feature test | 10-11 | [`BookingAuthorizationTest.php`](../tests/Feature/BookingAuthorizationTest.php) |
@@ -14,6 +16,7 @@
 | AI incident primary references | 24-26 | [`reference-links.md`](reference-links.md) |
 | Frontend and mobile trust exercise | 27 | [`client-boundary.md`](../examples/angular-mobile/client-boundary.md) |
 | Expensive fallback incident | 30-39 | [`incidents/02-expensive-rejection`](../incidents/02-expensive-rejection) |
+| Completed expensive-rejection incident review | 30-40 | [`incident-review.md`](../incidents/02-expensive-rejection/incident-review.md) |
 | Vulnerable fallback middleware | 35 | [`scenario/incident-02-rejection-outage`](https://github.com/adnanbn/5p_security_demos/tree/scenario/incident-02-rejection-outage) |
 | Before/after edge configuration | 36 | [`infrastructure/nginx`](../infrastructure/nginx) |
 | Proposed structured event and alert | 38 | [`incidents/02-expensive-rejection`](../incidents/02-expensive-rejection) |

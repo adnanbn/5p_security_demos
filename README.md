@@ -30,6 +30,7 @@ enough to read during a conversation.
 - [`demos/README.md`](demos/README.md) - choose a stable lesson ID
 - [`docs/control-catalog.md`](docs/control-catalog.md) - connect risk, guard, proof, and gate
 - [`incidents/README.md`](incidents/README.md) - investigate the two synthetic incidents
+- [`docs/incident-review-template.md`](docs/incident-review-template.md) - turn incident evidence into owned improvements
 - [`docs/demo-runbook.md`](docs/demo-runbook.md) - facilitate the live sequence
 
 ## Local Setup
@@ -69,6 +70,7 @@ packet with a fresh default replay so generated evidence cannot drift silently.
 
 - [`demos/README.md`](demos/README.md) - permanent demo catalog and stable IDs
 - [`docs/demo-runbook.md`](docs/demo-runbook.md) - local incident and CI flow
+- [`docs/incident-review-template.md`](docs/incident-review-template.md) - flexible, blameless review prompts
 - [`docs/branch-catalog.md`](docs/branch-catalog.md) - one deliberate failure per branch
 - [`docs/ai-assisted-security-review.md`](docs/ai-assisted-security-review.md) - use AI without treating its output as trusted
 - [`docs/supply-chain-hardening.md`](docs/supply-chain-hardening.md) - connect packages, actions, credentials, and publishing

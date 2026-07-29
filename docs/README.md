@@ -17,6 +17,7 @@ The shortest useful path is:
 | Find a risk, guard, proof, and gate | [Control catalog](control-catalog.md) |
 | Run a teaching sequence | [Demo runbook](demo-runbook.md) |
 | Investigate a synthetic incident | [Incident index](../incidents/README.md) |
+| Review an incident without treating the format as law | [Flexible incident review template](incident-review-template.md) |
 | Translate a lesson to another stack | [Framework examples](../examples/README.md) |
 | Find deliberate branches and pull requests | [Branch catalog](branch-catalog.md) |
 | Run scanners locally | [Scanner cheatsheet](scanner-cheatsheet.md) |

@@ -21,6 +21,9 @@ php artisan masterclass:replay 1
 
 Start with `incidents/01-cross-user-access/support-report.md`, then inspect the
 three log files. Do not open `facilitator-findings.md` until after discussion.
+After the reveal, walk through the completed
+[`incident-review.md`](../incidents/01-cross-user-access/incident-review.md)
+and ask which action item contains the strongest proof.
 
 ## Incident 2
 
@@ -30,6 +33,13 @@ php artisan masterclass:replay 2 --requests=120 --seed=20260808
 
 Begin with the timeline, edge logs, and infrastructure metrics. Reveal the
 Laravel denial logs after participants have formed initial hypotheses.
+After the reveal, use the completed
+[`incident-review.md`](../incidents/02-expensive-rejection/incident-review.md)
+to connect the Five Hows, layered resolution, communication, and action items.
+
+The reviews use the
+[flexible incident review template](incident-review-template.md). Treat it as
+a set of prompts, not a form that must be completed during active response.
 
 ## CI Demonstrations
 
