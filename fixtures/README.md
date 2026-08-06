@@ -1,25 +1,24 @@
-# Synthetic Security Fixtures
+# Safe Security Test Files
 
-This directory is reserved for inert inputs used to prove a scanner or test
-behavior. A fixture is evidence for a narrow lesson, not an application
-dependency or an exploit.
+This directory contains small, inactive test files used by scanners and tests.
+They are not application dependencies or working exploits.
 
 ## Safety Rules
 
-- Use only synthetic credentials, identities, hosts, payloads, and package
+- Use only fictional credentials, identities, hosts, request bodies, and package
   metadata.
 - Never copy production logs, customer data, private incident details, or an
   active credential.
 - Never install, import, execute, publish, or make a request from a vulnerable
-  dependency fixture.
-- Keep deliberately unsafe fixtures on the matching failure branch unless a
+  dependency test file.
+- Keep deliberately unsafe test files on the matching failure branch unless a
   harmless secure baseline belongs on `main`.
-- Make the smallest fixture that produces the intended deterministic signal.
-- Link the fixture from its demo README and durable `expected-finding.md`.
+- Make the smallest test file that produces the expected result.
+- Link the test file from its demo README and `expected-finding.md`.
 
-Live scanner output and advisory wording can change. The expected-finding
-document should explain what the gate is meant to catch, why it matters, and
-what it cannot prove.
+Scanner output and vulnerability wording can change. The expected-finding
+document explains what the check catches, why it matters, and what it cannot
+prove.
 
 `main` remains the secure baseline. Deliberate failure branches are teaching
-artifacts and must never be merged.
+examples and must never be merged.

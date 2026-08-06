@@ -1,4 +1,4 @@
-# Lecture References
+# Security Resources
 
 Primary sources used by the masterclass:
 

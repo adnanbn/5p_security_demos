@@ -2,9 +2,9 @@
 
 ## Why This Exists
 
-Dependency scanners identify packages associated with known advisories. They
-provide evidence to triage, not automatic proof that an application is
-exploitable.
+Dependency scanners identify packages with published security reports. A
+finding needs investigation; it does not automatically prove the application
+can be attacked through that package.
 
 ## Secure Baseline
 
@@ -17,7 +17,7 @@ recursively scans supported manifests and lockfiles.
 - **Draft PR:** [PR #3](https://github.com/adnanbn/5p_security_demos/pull/3)
 - **Expected red gate:** OSV dependency scan
 - **Expected finding:** at least one current advisory applies to the isolated
-  `lodash@4.17.19` lockfile fixture
+  small `lodash@4.17.19` lockfile
 
 The package is never installed or executed.
 
@@ -35,19 +35,16 @@ osv-scanner scan source --recursive .
 
 ## What The Evidence Proves
 
-The locked version matches current advisory data.
+The locked version matches a current published security report.
 
 ## What It Does Not Prove
 
-It does not prove the vulnerable code is shipped, reachable, exploitable in
-context, or free of compensating controls. Advisory counts and severities may
-change as the database is updated.
+It does not prove the vulnerable code is included in the released application,
+used by this code path, or exploitable here. Results may change as the security
+database is updated.
 
 ## Secure Response
 
-Confirm reachability and shipped artifacts, review the advisory, upgrade or
-remove the package, test the result, and time-box any exception.
-
-## Lecture Status
-
-Core PR demonstration.
+Check whether the package is shipped and used, read the security report,
+upgrade or remove the package, test the result, and give any temporary
+exception a clear owner and end date.

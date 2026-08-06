@@ -7,6 +7,5 @@ Route::get('/', fn () => response()->json([
     'repository' => 'private',
     'incidents' => [
         'cross-user booking access',
-        'expensive API rejection path',
     ],
 ]));

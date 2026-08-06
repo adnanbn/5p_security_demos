@@ -1,14 +1,17 @@
-# Security Week Objective
+# Security Upgrade Exercise
 
-Identify one risk, one guard, one proof, or one gate. Implement at least one meaningful improvement.
+Choose one real risk in work you already own. Add at least one meaningful
+improvement.
 
-1. Choose one meaningful boundary involving user data, privileged actions, uploads, shared links, reports, payments, or service availability.
-2. Write the risk as: "A [type of actor] could [unsafe action] because [missing or weak control]."
-3. Describe the guard that belongs at the trusted boundary.
-4. Name the proof that would show the unsafe behaviour is blocked.
-5. Name the repeatable CI/CD gate that should run before merge.
-6. Implement at least one of those improvements in a focused pull request.
-7. Record the remaining risk and the next step.
+1. Choose a feature involving user data, important actions, uploads, shared
+   links, reports, payments, or service availability.
+2. Write the risk as: "A user or service could [unsafe action] because
+   [protection is missing or weak]."
+3. Describe the protection and where the server should enforce it.
+4. Name the test that would show the unsafe action is blocked.
+5. Name the automated check that should run before merge.
+6. Implement at least one improvement in a focused pull request.
+7. Record what is still not protected and the next step.
 
 If repository access is limited, document your proposal. The goal is a real improvement.
 

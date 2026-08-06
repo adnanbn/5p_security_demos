@@ -8,15 +8,15 @@ read that record.
 
 ## Developer Lesson
 
-Express ownership in the data-access path and keep a negative two-user test as
-the repeatable proof.
+Limit data access by owner and keep a two-user test that tries the forbidden
+request.
 
-## Asset And Trust Boundary
+## What Are We Protecting?
 
-- **Protected asset:** per-user booking data
-- **Actor:** a valid authenticated user
-- **Trusted boundary:** the Laravel API
-- **Forbidden behavior:** reading another user's booking
+- **Data:** per-user booking data
+- **Who sends the request?** a valid logged-in user
+- **Where is access checked?** the server API, implemented here with Laravel
+- **What must not happen?** reading another user's booking
 
 ## Secure Baseline
 
@@ -24,15 +24,15 @@ the repeatable proof.
 the booking through the authenticated user's relationship and then applies the
 [`BookingPolicy`](../../app/Policies/BookingPolicy.php). The
 [`BookingAuthorizationTest`](../../tests/Feature/BookingAuthorizationTest.php)
-proves anonymous, owner, valid-non-owner, and missing-record behavior.
+proves logged-out, owner, valid non-owner, and missing-record behavior.
 
 ## Intentional Failure
 
 - **Branch:** `demo/01-authz-cross-user`
 - **Draft PR:** [PR #1](https://github.com/adnanbn/5p_security_demos/pull/1)
 - **Expected red gate:** Laravel tests
-- **Expected finding:** a valid non-owner receives `200` where the product rule
-  requires an indistinguishable `404`
+- **Expected finding:** a valid non-owner receives `200` instead of the same
+  `404` response used for a missing booking
 
 Generic scanners remain green because they were never given the product rule.
 
@@ -52,8 +52,8 @@ All users and bookings are generated test data.
 
 ## What The Evidence Proves
 
-The focused request tests prove the current endpoint denies a valid
-authenticated non-owner and does not serialize the protected booking.
+The focused request tests prove the current endpoint denies a valid logged-in
+non-owner and does not return the protected booking.
 
 ## What It Does Not Prove
 
@@ -62,15 +62,11 @@ uses the same ownership rule.
 
 ## Secure Response
 
-Contain the exposed route, scope the query to the actor, retain the policy, add
-the negative test, and record the authorization decision without logging the
-record contents.
+Disable the unsafe route if needed, limit the query to the signed-in user's
+records, keep the second permission check, add the negative test, and log the
+permission result without logging record contents.
 
 ## Cross-Stack Translation
 
 The same rule appears in the
 [`examples`](../../examples/README.md) for Django, Next.js, Angular, and mobile.
-
-## Lecture Status
-
-Core incident and PR demonstration.

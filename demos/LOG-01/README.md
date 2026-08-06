@@ -35,7 +35,8 @@ php artisan test --filter=SecurityEventRecorderTest
 
 ## What The Evidence Proves
 
-The static rule proves a known risky logging shape entered the scanned paths.
+The static rule proves that the scanned code contains a known risky logging
+pattern.
 
 ## What It Does Not Prove
 
@@ -44,10 +45,6 @@ or replace review of the event schema.
 
 ## Secure Response
 
-Log the decision, reason, request ID, and bounded actor/resource context.
-Redact credentials, minimize personal data, and set access and retention
-controls.
-
-## Lecture Status
-
-Core PR demonstration.
+Log the result, reason, request ID, user ID, and resource ID when needed.
+Remove credentials, keep personal data to a minimum, and control who can read
+the logs and how long they are stored.

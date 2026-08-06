@@ -2,20 +2,20 @@
     "synthetic": true,
     "incident_id": "INCIDENT-01",
     "purpose": "masterclass incident simulation",
-    "generation_command": "php artisan masterclass:replay 1",
+    "generation_command": "php artisan masterclass:replay",
     "file_roles": {
         "generated_evidence": [
             "edge-access.jsonl",
             "application.jsonl",
             "security-events.jsonl"
         ],
-        "participant_materials": [
+        "investigation_materials": [
             "support-report.md",
-            "participant-prompts.md",
+            "investigation-questions.md",
             "timeline.md"
         ],
-        "facilitator_reveal": [
-            "facilitator-findings.md"
+        "root_cause_and_lessons": [
+            "root-cause-and-lessons.md"
         ]
     },
     "safety_note": "All identities, records, addresses, and events are synthetic. Do not replace them with customer or employer evidence."

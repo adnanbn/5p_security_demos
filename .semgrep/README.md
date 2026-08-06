@@ -4,11 +4,11 @@
 patterns used in the teaching demos. It is intentionally focused instead of
 claiming broad vulnerability coverage.
 
-The policy covers:
+The policy checks for:
 
 - Logging an entire Laravel request payload or header collection (`LOG-01`).
-- Reading environment values directly from application code instead of Laravel
-  configuration.
+- Reading environment values directly from application code instead of the
+  framework configuration layer.
 - Explicit frontend raw-HTML escape hatches used by `XSS-01`.
 
 ## Run Locally
@@ -24,16 +24,16 @@ semgrep scan --config .semgrep/security.yml --error --metrics=off app routes con
 - Match the narrow unsafe shape used by the lesson.
 - Give the finding an actionable message.
 - Keep a secure example on `main`.
-- Put the unsafe specimen only on its deliberate failure branch.
-- Document the semantic result in the demo's `expected-finding.md`.
+- Put the unsafe example only on its deliberate failure branch.
+- Document what the failure means in the demo's `expected-finding.md`.
 - Check for noisy matches before making the gate required.
 
-The frontend rule is deliberately lexical. It catches the named escape hatches
-in this teaching repository, but may also match text in a comment or string and
-will miss custom wrapper APIs.
+The frontend rule looks for specific text patterns. It catches the named escape
+hatches in this repository, but it may also match a comment or string and may
+miss project-specific wrapper functions.
 
 Semgrep identifies code shapes. It cannot infer product ownership,
-authorization intent, exploitability, or complete data flow by itself. Treat a
-finding as review evidence, not a verdict.
+the application's permission rules, whether a bug can be exploited, or every
+data path. Treat a finding as a reason to review the code, not a final verdict.
 
 All specimens are synthetic. Deliberate failure branches must never be merged.
