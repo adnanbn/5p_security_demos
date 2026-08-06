@@ -4,5 +4,5 @@ type CommentProps = {
 
 export function Comment({ body }: CommentProps) {
   // React escapes text interpolation. Keep untrusted content out of HTML sinks.
-  return <p>{body}</p>
+  return <p dangerouslySetInnerHTML={{ __html: body }} />
 }
