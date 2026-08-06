@@ -1,37 +1,33 @@
-# 5% Security Masterclass Demos
+# 5% Security Demos
 
-Private teaching repository for the 5% Security Masterclass.
+This repository contains practical security examples for software engineers.
+The working application uses Laravel, but the security decisions apply to any
+backend, frontend, or mobile stack.
 
-The executable example is a Laravel 13 booking API. It connects two fictional
-incidents to secure coding, tests, CI gates, software supply-chain controls,
-observability, and incident response. The repository is deliberately small
-enough to read during a conversation.
+The repository is intentionally small. Start with one risk, see the secure
+code, then compare it with a pull request where one protection is removed.
 
 ## What Is Here
 
-- Sanctum authentication and owner-scoped booking access
-- Laravel policy and two-user authorization tests
-- Writable-field allowlists that keep server-owned booking state off limits
-- Credential-protected partner API with rate limiting
-- Signed webhooks with freshness and replay protection
-- Outbound HTTP restricted to a configured destination
-- Structured security events with correlation IDs
-- Sensitive logging and serialization guards
-- Deterministic evidence for both masterclass incidents
-- GitHub Actions gates and isolated failing demonstration branches
-- Short translations for Django, Next.js, Angular, and mobile teams, including
-  safe client-side rendering
-- AI-assisted security review and supply-chain hardening guides
-- A security-focused pull-request template and week-ahead exercise
+- Login and per-user access checks
+- Tests that use two different users
+- Protection for fields that only the server may change
+- A credential-protected API with rate limiting
+- Signed webhooks with time and replay checks
+- Outbound requests limited to approved destinations
+- Useful security logs with request IDs
+- Checks for secrets, vulnerable packages, risky code, and GitHub Actions
+- Small examples for Django, Next.js, Angular, and mobile applications
+- One fictional incident with logs, questions, root cause, and action items
+- A practical AI-assisted review guide
 
 ## Start Here
 
-- [`docs/repository-tour.md`](docs/repository-tour.md) - understand how the pieces fit
-- [`demos/README.md`](demos/README.md) - choose a stable lesson ID
-- [`docs/control-catalog.md`](docs/control-catalog.md) - connect risk, guard, proof, and gate
-- [`incidents/README.md`](incidents/README.md) - investigate the two synthetic incidents
-- [`docs/incident-review-template.md`](docs/incident-review-template.md) - turn incident evidence into owned improvements
-- [`docs/demo-runbook.md`](docs/demo-runbook.md) - facilitate the live sequence
+- [`docs/repository-tour.md`](docs/repository-tour.md) explains how the pieces fit.
+- [`demos/README.md`](demos/README.md) lists the security demos.
+- [`incidents/README.md`](incidents/README.md) contains the booking-access incident.
+- [`docs/demo-guide.md`](docs/demo-guide.md) gives a short path through the examples.
+- [`docs/scanner-cheatsheet.md`](docs/scanner-cheatsheet.md) explains what each check can catch.
 
 ## Local Setup
 
@@ -46,43 +42,32 @@ php artisan migrate --seed
 php artisan test
 ```
 
-The partner API expects a SHA-256 hash, not a plaintext credential:
+The partner API expects a SHA-256 hash instead of a plain-text credential:
 
 ```bash
 php -r "echo hash('sha256', 'your-local-demo-key'), PHP_EOL;"
 ```
 
-Place the output in `PARTNER_API_KEY_HASH` in your local `.env`. Never commit
-the plaintext key or a production credential.
+Place the result in `PARTNER_API_KEY_HASH` in your local `.env`. Use only a
+test value. SHA-256 is used here for a long, random API key. Passwords require
+the framework's password hasher, which is intentionally slow and salted.
 
-## Replaying the Incidents
+## Rebuild the Incident Files
 
 ```bash
-php artisan masterclass:replay 1
-php artisan masterclass:replay 2 --requests=120 --seed=20260808
+php artisan masterclass:replay
 ```
 
-Evidence is generated under `incidents/`. Participant prompts and facilitator
-findings are deliberately separate. A test compares the committed incident
-packet with a fresh default replay so generated evidence cannot drift silently.
-
-## Guided Demonstrations
-
-- [`demos/README.md`](demos/README.md) - permanent demo catalog and stable IDs
-- [`docs/demo-runbook.md`](docs/demo-runbook.md) - local incident and CI flow
-- [`docs/incident-review-template.md`](docs/incident-review-template.md) - flexible, blameless review prompts
-- [`docs/branch-catalog.md`](docs/branch-catalog.md) - one deliberate failure per branch
-- [`docs/ai-assisted-security-review.md`](docs/ai-assisted-security-review.md) - use AI without treating its output as trusted
-- [`docs/supply-chain-hardening.md`](docs/supply-chain-hardening.md) - connect packages, actions, credentials, and publishing
-- [`docs/security-week-objective.md`](docs/security-week-objective.md) - one risk, guard, proof, and gate
-- [`docs/reference-links.md`](docs/reference-links.md) - primary sources used by the lecture
+This command recreates the fictional files in
+`incidents/01-cross-user-access/`. A test confirms that the committed files
+still match the generator.
 
 ## Safety
 
-Everything in this repository is synthetic. The demo branches contain only
-harmless canary secrets and non-executed vulnerable dependency fixtures.
-Outbound-request tests fake every destination and prevent stray network calls.
+All users, records, credentials, hosts, and incident details are fictional.
+The unsafe branches use harmless test data. Vulnerable package examples are
+never installed, and outbound-request tests block real network calls.
 
-This repository is private. Do not change its visibility until
-[`docs/public-release-checklist.md`](docs/public-release-checklist.md) has been
-completed intentionally.
+The repository is private. Complete
+[`docs/public-release-checklist.md`](docs/public-release-checklist.md) before
+making it public.

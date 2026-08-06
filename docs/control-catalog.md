@@ -1,34 +1,31 @@
 # Security Control Catalog
 
-Each row connects a practical risk to a guard, proof, and repeatable gate.
-Follow the demo link for exact source locations and the durable expected
-finding.
+Each row connects a risk to a protection, a test, and an automated check.
 
-| ID | Risk | Secure guard and proof | Primary gate |
+| ID | Risk | Protection and proof | Automated check |
 | --- | --- | --- | --- |
-| [`AUTHZ-01`](../demos/AUTHZ-01/README.md) | A valid user reads another user's record | Owner-scoped lookup, policy, and valid-non-owner test | Laravel tests |
+| [`AUTHZ-01`](../demos/AUTHZ-01/README.md) | A valid user reads another user's record | Owner-limited query, second permission check, and two-user test | Application tests |
 | [`SECRETS-01`](../demos/SECRETS-01/README.md) | A credential enters Git history | Canary detection plus revoke-and-rotate response | Gitleaks |
 | [`DEPS-01`](../demos/DEPS-01/README.md) | A locked dependency has a known vulnerability | Reviewed lockfile and isolated advisory evidence | Composer Audit and OSV-Scanner |
 | [`LOG-01`](../demos/LOG-01/README.md) | Logs capture credentials or sensitive payloads | Selected structured fields and negative logging rules | Semgrep |
-| [`CI-01`](../demos/CI-01/README.md) | Mutable or over-privileged CI code executes in a trusted environment | Full-SHA Action pins and least-privilege permissions | Zizmor |
-| [`AVAILABILITY-01`](../demos/AVAILABILITY-01/README.md) | Correctly denied requests still exhaust capacity | Cheap rejection path and bounded-cost regression test | Laravel tests |
-| [`INPUT-01`](../demos/INPUT-01/README.md) | Valid but protected fields are mass assigned | Explicit writable-field allowlist and protected-field test | Laravel tests |
-| [`WEBHOOK-01`](../demos/WEBHOOK-01/README.md) | A captured valid webhook is replayed | Signature, freshness, and atomic replay protection | Laravel tests |
-| [`SSRF-01`](../demos/SSRF-01/README.md) | User input selects an internal or untrusted outbound destination | Configured destination policy and fake-HTTP negative tests | Laravel tests |
-| [`XSS-01`](../demos/XSS-01/README.md) | Raw HTML APIs bypass framework escaping | Text rendering by default and review of explicit HTML sinks | Semgrep |
+| [`CI-01`](../demos/CI-01/README.md) | A GitHub Action can change without a visible workflow change | Full commit references and minimal permissions | Zizmor |
+| [`INPUT-01`](../demos/INPUT-01/README.md) | A request changes fields only the server should control | Explicit list of allowed fields and protected-field test | Application tests |
+| [`WEBHOOK-01`](../demos/WEBHOOK-01/README.md) | A captured valid webhook is repeated | Signature, timestamp, and duplicate-event protection | Application tests |
+| [`SSRF-01`](../demos/SSRF-01/README.md) | User input selects an internal or untrusted outbound destination | Approved destination and fake-HTTP negative tests | Application tests |
+| [`XSS-01`](../demos/XSS-01/README.md) | Raw HTML APIs bypass framework escaping | Text rendering by default and review of raw-HTML calls | Semgrep |
 
-## How To Use The Catalog
+## How to Use This Catalog
 
-1. Name the protected asset and trusted boundary.
-2. Describe one forbidden behavior in plain language.
-3. Find the guard closest to that boundary.
-4. Run the smallest proof that exercises the forbidden behavior.
-5. Keep the matching gate required before merge.
+1. Name what needs protection.
+2. Describe one action that must be blocked.
+3. Put the protection where the server makes the decision.
+4. Write the smallest test that tries the blocked action.
+5. Run that test automatically before merge.
 
-The deliberate branches are intentionally unsafe and must never merge. Live CI
-annotations are useful during a demonstration but are ephemeral. The
-`expected-finding.md` beside each demo is the durable semantic record.
+The demo branches are intentionally unsafe and must not be merged. GitHub may
+change how a failed check is displayed. Each `expected-finding.md` explains the
+important result without depending on a specific CI screen.
 
-All evidence, credentials, identities, hosts, and incident data are synthetic.
-These controls demonstrate selected layers; they do not certify the repository
-or any other application as secure.
+All evidence, credentials, identities, hosts, and incident data are fictional.
+These examples cover selected protections. They do not prove that this or any
+other application is fully secure.

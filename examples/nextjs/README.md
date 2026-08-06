@@ -1,6 +1,6 @@
 # Next.js Examples
 
-This directory translates server authorization and output-encoding decisions
+This directory translates server permission and safe-rendering decisions
 to a Next.js or React code review.
 
 ## Server-Owned Identity
@@ -12,8 +12,8 @@ the caller may receive. This is the Next.js translation of `AUTHZ-01`.
 ## Safe Rendering
 
 For `XSS-01`, render untrusted comments through normal JSX text interpolation.
-Treat `dangerouslySetInnerHTML` as a security-sensitive escape hatch that
-requires a justified sanitization boundary and focused proof.
+Treat `dangerouslySetInnerHTML` as a security-sensitive exception that requires
+reviewed sanitization and a focused test.
 
 ## Review Questions
 
@@ -21,7 +21,7 @@ requires a justified sanitization boundary and focused proof.
 2. Does the query enforce ownership instead of trusting a body or route field?
 3. Is the response limited to intended fields?
 4. Is untrusted content rendered as text?
-5. Is a valid-non-owner or malicious-content case required in CI?
+5. Is a valid non-owner or malicious-content case required in CI?
 
 The files are teaching extracts, not a complete Next.js application. See
 [`AUTHZ-01`](../../demos/AUTHZ-01/README.md) and

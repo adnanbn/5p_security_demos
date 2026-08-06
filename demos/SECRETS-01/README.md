@@ -35,7 +35,8 @@ The canary grants no access and exists only on the deliberate branch.
 
 ## What The Evidence Proves
 
-It proves a credential-shaped value entered reachable history.
+It proves a credential-shaped value entered Git history that the scanner can
+reach.
 
 ## What It Does Not Prove
 
@@ -47,7 +48,3 @@ exposed outside the repository.
 Revoke, rotate, deploy the replacement, verify the old value no longer works,
 investigate its use, then remove it from current code and history where
 appropriate.
-
-## Lecture Status
-
-Core PR demonstration.

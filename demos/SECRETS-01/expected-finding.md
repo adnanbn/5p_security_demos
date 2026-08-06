@@ -2,10 +2,9 @@
 
 - **Gate:** `Security / Secret scanning`
 - **Rule:** `masterclass-demo-canary`
-- **Semantic result:** a synthetic credential pattern exists in Git history
+- **What the failure means:** a fictional credential pattern exists in Git history
 - **Safety:** the value grants no access and is redacted from CI output
-- **Unrelated gates:** application, dependency, static-analysis, and workflow
+- **Other checks:** application, dependency, static-analysis, and workflow
   checks remain green
 
-The file path is useful context. The secret value itself is never required as
-teaching evidence.
+The file path is useful. There is no need to display the test secret value.

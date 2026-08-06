@@ -4,22 +4,24 @@
 
 React, Next.js, and Angular escape ordinary text rendering. The protection is
 bypassed when code deliberately introduces a raw-HTML or trust-bypass API.
+This can allow cross-site scripting (XSS), where untrusted content runs in a
+user's browser.
 
 ## Developer Lesson
 
 Treat API, CMS, and user content as text by default. Allow HTML only through a
 reviewed sanitization and content policy.
 
-## Asset And Trust Boundary
+## What Are We Protecting?
 
-- **Protected asset:** the user's browser session and rendered page
-- **Actor:** any source able to influence displayed content
-- **Trusted boundary:** the client-side rendering sink
-- **Forbidden behavior:** interpreting untrusted content as executable markup
+- **Data or service:** the user's browser session and page
+- **Who supplies the content?** any API, CMS, or user that can affect displayed text
+- **Where is it checked?** the frontend rendering code
+- **What must not happen?** treating untrusted content as executable HTML
 
 ## Secure Baseline
 
-The framework examples render a synthetic comment through normal escaped text
+The framework examples render a fictional comment through normal escaped text
 binding. The local Semgrep rules scan example TypeScript alongside the Laravel
 application.
 
@@ -37,7 +39,7 @@ application.
 semgrep scan --config .semgrep/security.yml --error --metrics=off app routes config examples
 ```
 
-The fixture is inert text and is never opened in a browser.
+The test input is inactive text and is never opened in a browser.
 
 ## Evidence
 
@@ -53,20 +55,17 @@ The fixture is inert text and is never opened in a browser.
 
 ## What The Evidence Proves
 
-It proves one of the named lexical sink patterns entered a scanned example.
+It proves that a scanned example contains one of the named raw-HTML patterns.
 
 ## What It Does Not Prove
 
-It cannot determine whether every HTML value is attacker-controlled, whether a
-sanitizer is correctly configured, or whether CSP and browser policy are
-effective. The intentionally narrow rule can match comments or strings and can
-miss project-specific wrapper APIs.
+It cannot determine whether every HTML value is controlled by an attacker,
+whether HTML-cleaning code is correct, or whether browser security headers are
+effective. The narrow rule can match comments or strings and can miss
+project-specific wrapper functions.
 
 ## Secure Response
 
-Render text as text, remove unnecessary bypasses, sanitize through one reviewed
-boundary when HTML is truly required, and keep CSP as defense in depth.
-
-## Lecture Status
-
-Repository-only extension.
+Render text as text and remove unnecessary bypasses. When HTML is truly
+required, pass it through one reviewed HTML-cleaning function and keep browser
+security headers as another layer.

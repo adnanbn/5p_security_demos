@@ -8,12 +8,12 @@ Explain the ordinary development decision this demo makes visible.
 
 State one transferable lesson in plain language.
 
-## Asset And Trust Boundary
+## What Are We Protecting?
 
-- **Protected asset:**
-- **Actor:**
-- **Trusted boundary:**
-- **Forbidden behavior:**
+- **Data or service:**
+- **Who sends the request?**
+- **Where must the rule be enforced?**
+- **What must not happen?**
 
 ## Secure Baseline
 
@@ -23,17 +23,17 @@ Link the implementation and proof on `main`.
 
 - **Branch:**
 - **Draft PR:**
-- **Expected red gate:**
-- **Expected semantic finding:**
-- **Why other gates remain green:**
+- **Check that should fail:**
+- **What the failure means:**
+- **Why other checks still pass:**
 
 ## Reproduce Safely
 
-Provide bounded local commands that use only synthetic fixtures.
+Provide small local commands that use only fictional test data.
 
 ## Evidence
 
-Link fixtures, tests, scanner rules, expected findings, and live PR checks.
+Link test files, tests, scanner rules, expected findings, and live PR checks.
 
 ## What The Evidence Proves
 
@@ -45,7 +45,7 @@ Record meaningful limitations and remaining engineering judgment.
 
 ## Secure Response
 
-Describe containment, correction, proof, and prevention.
+Describe how to stop the problem, fix it, test the fix, and prevent a repeat.
 
 ## Cross-Stack Translation
 
@@ -58,4 +58,4 @@ real data.
 
 ## Repository Relationships
 
-List related source files, tests, workflows, incidents, and lecture status.
+List related source files, tests, workflows, and incidents.

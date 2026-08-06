@@ -5,8 +5,8 @@ Django-shaped example.
 
 ## Decision Being Taught
 
-The caller may choose a booking identifier, but the authenticated user defines
-the ownership scope:
+The request may choose a booking ID, but the signed-in user limits which
+bookings may be returned:
 
 ```python
 user.bookings.get(pk=booking_id)
@@ -18,11 +18,11 @@ generic scanner because the scanner does not know who should own the record.
 
 ## Reuse In A Real Project
 
-- Put the ownership decision in the queryset, permission, or service boundary.
+- Put the ownership decision in the database query, permission check, or service.
 - Use the project's chosen `404` or `403` behavior consistently.
 - Verify both the response and that no protected state changed.
 - Add the focused test to required CI.
 
 This file is a teaching extract, not a runnable Django project. See
 [`AUTHZ-01`](../../demos/AUTHZ-01/README.md) for the canonical lesson and
-durable expected finding.
+expected result.

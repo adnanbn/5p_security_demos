@@ -1,32 +1,26 @@
 # Flexible Incident Review Template
 
 > [!IMPORTANT]
-> **This is a flexible teaching aid, not a strict or mandatory template.**
-> Adapt, reorder, combine, or omit sections based on the incident, organization,
-> severity, and audience. It is not a compliance document, legal checklist,
-> breach-notification decision tree, or substitute for your organization's
-> incident-response process. Never delay containment or recovery to complete a
-> document. Never paste credentials, customer records, private vulnerability
-> details, or unnecessary personal data into it. Keep confirmed facts separate
-> from hypotheses and leave unknowns explicit. Incidents rarely have one root
-> cause, one linear chain, or exactly five causal steps. Keep the review
-> blameless and evidence-based: improve systems and decisions rather than
-> assigning fault to an individual.
+> **This is a flexible guide, not a required template.**
+> Use only the sections that help your team learn and act. This is not legal or
+> compliance advice, and it does not replace your organization's incident
+> process. Stop the ongoing harm before writing a perfect document. Keep real
+> credentials, customer records, and private security details out of shared
+> copies. Separate confirmed facts from guesses, and improve the system instead
+> of blaming one person.
 
 ## How to Use It
 
-- Start during the incident only when writing does not interfere with response.
-- Update facts, hypotheses, and decisions as evidence changes.
+- Write during the incident only when it does not slow the response.
+- Update facts, guesses, and decisions as evidence changes.
 - Use the smallest set of sections that helps the team learn and act.
-- Ask "How was this possible?" until the team finds actionable system
-  conditions. Stop before the exercise becomes forced or speculative.
-- Convert follow-up work into owned, trackable items with verifiable end states.
-- Prepare a separate sanitized version if the review will be shared more
-  broadly than the incident evidence.
+- Ask "How was this possible?" until the team finds something it can improve.
+- Give every follow-up task an owner, due date, and clear proof of completion.
+- Remove sensitive details before sharing the review more widely.
 
 ---
 
-## 1. Incident Metadata
+## 1. Incident Details
 
 - **Incident ID:**
 - **Title:**
@@ -36,13 +30,13 @@
 - **Detected:**
 - **Contained:**
 - **Resolved:**
-- **Services or assets involved:**
+- **Services or data involved:**
 - **Incident owner:**
 - **Responders and roles:**
-- **Review date and facilitator:**
-- **Restricted evidence location:**
+- **Review date:**
+- **Private evidence location:**
 
-## 2. Executive Summary
+## 2. Short Summary
 
 In three to five sentences:
 
@@ -51,7 +45,7 @@ In three to five sentences:
 - How was it detected and contained?
 - What is the current state?
 
-## 3. Impact and Scope
+## 3. Impact
 
 ### Confirmed
 
@@ -61,7 +55,7 @@ In three to five sentences:
 - **Data or security impact:**
 - **Business or support impact:**
 
-### Suspected but Unconfirmed
+### Possible but Not Confirmed
 
 - 
 
@@ -69,65 +63,63 @@ In three to five sentences:
 
 - 
 
-Do not turn absence of evidence into a claim of no impact.
+Missing evidence does not prove that there was no impact.
 
-## 4. Detection
+## 4. How We Found It
 
 - **First signal or report:**
 - **Detection source:** User / QA / alert / log review / external report / other
-- **What made the signal actionable?**
+- **What made the report useful?**
 - **What should have detected the condition earlier?**
-- **Which evidence was missing or too noisy?**
+- **Which logs or data were missing or too noisy?**
 
 ## 5. Timeline
 
-Use one timezone. Record facts and evidence, not reconstructed certainty.
+Use one timezone. Record known facts and evidence. Mark guesses clearly.
 
 | Time | Observed fact or evidence | Decision or action | Owner |
 | --- | --- | --- | --- |
 | HH:MM |  |  |  |
 
-## 6. Five Hows: Causal Analysis
+## 6. Five Hows
 
-"Five Whys" is the familiar name for this family of analysis. This template
-uses **How was this possible?** to keep the discussion close to system behavior
-and away from personal blame.
+"Five Whys" is the familiar name. This version asks **How was this possible?**
+to keep the discussion focused on the system instead of blaming a person.
 
-Do not force exactly five rows. Branch when multiple conditions contributed.
-Every answer should point to evidence or be labeled as a hypothesis.
+You do not need exactly five rows. Follow more than one path when needed. Link
+each answer to evidence or mark it as a guess.
 
-| Step | How was this possible? | Evidence | Condition or control gap |
+| Step | How was this possible? | Evidence | Missing protection |
 | --- | --- | --- | --- |
 | Impact | How did the user-visible or security impact happen? |  |  |
 | 1 | How did the request, change, or event reach that path? |  |  |
 | 2 | How did preventive controls allow it? |  |  |
-| 3 | How did testing or review miss it? |  |  |
+| 3 | How did tests or review miss it? |  |  |
 | 4 | How did detection or evidence affect the response? |  |  |
-| 5 | Which deeper system condition made recurrence plausible? |  |  |
+| 5 | What would allow the same problem to happen again? |  |  |
 
-## 7. Contributing Conditions
+## 7. Other Factors
 
-Capture multiple conditions rather than compressing the incident into one
-"root cause."
+Most incidents have more than one cause. Record the important factors.
 
 - **Technical design:**
 - **Testing and review:**
 - **Deployment or configuration:**
 - **Dependencies and supply chain:**
-- **Observability and alerting:**
+- **Logs, metrics, and alerts:**
 - **Operational process and ownership:**
 - **Communication and coordination:**
 - **External or environmental conditions:**
 
-## 8. Resolution and Recovery
+## 8. Stop, Fix, and Recover
 
-### Immediate Containment
+### Stop the Ongoing Harm
 
 - What reduced active harm?
 - What was the tradeoff?
-- How was containment verified?
+- How did the team verify that the harm stopped?
 
-### Remediation
+### Permanent Fix
 
 - What changed in code, configuration, access, or process?
 - Which unsafe condition was removed?
@@ -137,7 +129,7 @@ Capture multiple conditions rather than compressing the incident into one
 - How and when was normal service restored?
 - What was monitored during recovery?
 
-### Verification and Residual Risk
+### Verification and Remaining Risk
 
 - Which test, query, metric, or review proves the intended behavior?
 - What remains unknown or accepted?
@@ -150,10 +142,11 @@ Capture multiple conditions rather than compressing the incident into one
 | Responders |  |  |  |  |
 | Internal stakeholders |  |  |  |  |
 | Customers or partners |  |  |  |  |
-| Public or regulatory audience, if applicable |  |  |  |  |
+| Public or regulators, if needed |  |  |  |  |
 
-Do not publish unverified attribution, exploitable detail, customer data, or a
-claim such as "no breach" before the evidence supports it.
+Do not publish guesses about who caused the incident, instructions that make
+the bug easier to exploit, customer data, or claims that the evidence cannot
+support.
 
 ## 10. What Helped, What Hurt, and Where We Were Lucky
 
@@ -173,22 +166,22 @@ claim such as "no breach" before the evidence supports it.
 
 Prefer a small number of specific improvements over a long wish list.
 
-| ID | Risk or condition | Action | Type | Owner | Due | Verifiable proof | Gate, alert, or runbook | Status |
+| ID | Risk or problem | Action | Type | Owner | Due | Proof | Test, alert, or guide | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | AI-01 |  |  | Prevent / Detect / Respond |  |  |  |  | Open |
 
-An action item is not complete because code was written. Define the evidence
-that will show the risk was reduced.
+Writing code is not enough. Define the test, alert, or review that proves the
+improvement works.
 
 ## 12. Closure
 
 - **Review approved by:**
 - **Follow-up date:**
-- **Open residual risk and approver:**
+- **Remaining risk and approver:**
 - **Evidence required before closure:**
 - **Lessons shared with:**
 
-## 13. Evidence Appendix
+## 13. Evidence Links
 
 Link evidence rather than copying sensitive material into this document.
 
@@ -197,7 +190,7 @@ Link evidence rather than copying sensitive material into this document.
 - Relevant changes and pull requests:
 - Tests and CI runs:
 - Customer or support reports:
-- Communication artifacts:
+- Communication:
 - Related incidents:
 
 ## Influences

@@ -1,12 +1,12 @@
 # AI-Assisted Security Review
 
-AI can accelerate review, but its output is a hypothesis until the repository
-provides evidence.
+AI can make review faster, but an AI answer is still a suggestion until code,
+tests, or trusted documentation support it.
 
 ## Safe Review Contract
 
 - Treat generated code and advice as an untrusted change.
-- Treat the agent as a privileged automation identity.
+- Treat the AI tool like automation that may have powerful access.
 - Give it only the repository, network access, and credentials the task needs.
 - Do not paste production data, active credentials, private incident details,
   or customer records into prompts.
@@ -17,12 +17,12 @@ provides evidence.
 ```text
 Review this diff as a security-minded engineer.
 
-1. Name the protected asset and trust boundary.
+1. Name the data or service being protected and where the check belongs.
 2. Describe one action a valid user must not be able to perform.
-3. Identify risky data flows, dependency changes, logging, and CI changes.
-4. Propose the smallest negative test that would prove the boundary.
+3. Identify risky data flow, package, logging, and CI changes.
+4. Propose the smallest negative test that would prove the protection works.
 5. Separate facts visible in the diff from assumptions that need verification.
-6. Do not add dependencies or change workflows without explaining the trust cost.
+6. Explain why any new package or workflow change needs to be trusted.
 ```
 
 ## Verify The Answer
@@ -31,10 +31,10 @@ Review this diff as a security-minded engineer.
 2. Run the proposed negative test.
 3. Run the normal quality and security workflows.
 4. Confirm any cited framework behavior in official documentation.
-5. Record remaining risk instead of asking the model for certainty.
+5. Record what is still unknown instead of asking the model for certainty.
 
-## Masterclass Exercise
+## Practice
 
 Run the prompt against `demo/01-authz-cross-user`. The important result is not
 whether the AI notices the bug. It is whether the team can turn the claim into
-a deterministic two-user test and a reviewable fix.
+a repeatable two-user test and a reviewable fix.

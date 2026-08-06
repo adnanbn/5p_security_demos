@@ -1,42 +1,41 @@
-# INCIDENT-01: Cross-User Booking Access
+# INCIDENT-01: One User Opens Another User's Booking
 
-An ordinary authenticated user can retrieve another user's booking by changing
-the identifier in the URL. The exercise asks the group to separate
-authentication from authorization and decide what can be proven from incomplete
-logs.
+A normal logged-in user can open another user's booking by changing the booking
+number in the URL. This incident separates login from permission and shows the
+limits of incomplete logs.
 
-Everything in this directory is synthetic.
+Everything in this directory is fictional.
 
-## Participant Reading Order
+## Reading Order
 
 1. [`support-report.md`](support-report.md)
 2. [`timeline.md`](timeline.md)
 3. [`edge-access.jsonl`](edge-access.jsonl)
 4. [`application.jsonl`](application.jsonl)
 5. [`security-events.jsonl`](security-events.jsonl)
-6. [`participant-prompts.md`](participant-prompts.md)
+6. [`investigation-questions.md`](investigation-questions.md)
+7. [`root-cause-and-lessons.md`](root-cause-and-lessons.md)
+8. [`incident-review.md`](incident-review.md)
 
-Do not open [`facilitator-findings.md`](facilitator-findings.md) or the
-completed [`incident-review.md`](incident-review.md) until the group has
-discussed containment, scope, missing evidence, and a regression test.
+For a challenge, answer the investigation questions before reading the root
+cause. For a quick review, read the files in order.
 
 ## What Each File Is
 
-| Category | Files | Interpretation |
+| Category | Files | What they contain |
 | --- | --- | --- |
-| Generated incident evidence | `edge-access.jsonl`, `application.jsonl`, `security-events.jsonl` | Deterministic synthetic telemetry for correlation and evidence-limit discussion |
-| Participant context | `support-report.md`, `timeline.md` | Generated scenario narrative, not independent telemetry |
-| Participant prompts | `participant-prompts.md` | Questions for the investigation |
-| Facilitator-only reveal | `facilitator-findings.md` | Designed root cause, evidence limits, and corrective layers |
-| Completed incident review | `incident-review.md` | Post-investigation walkthrough of timeline, Five Hows, resolution, and action items |
-| Modeled metrics | None | This incident does not use modeled infrastructure metrics |
+| Generated evidence | `edge-access.jsonl`, `application.jsonl`, `security-events.jsonl` | Fictional logs for request tracking and evidence limits |
+| Context | `support-report.md`, `timeline.md` | The first report and the known sequence of events |
+| Questions | `investigation-questions.md` | Short questions for the investigation |
+| Root cause and lessons | `root-cause-and-lessons.md` | The cause, what the logs cannot prove, and the fixes |
+| Completed review | `incident-review.md` | A worked example with Five Hows and action items |
 
 ## Replay
 
 ```bash
-php artisan masterclass:replay 1
+php artisan masterclass:replay
 ```
 
-The secure implementation and proof are cataloged under
+The secure implementation and test are listed under
 [`AUTHZ-01`](../../demos/AUTHZ-01/README.md). The deliberate failure branch is
 teaching material and must never be merged.

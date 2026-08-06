@@ -1,15 +1,15 @@
-# CI-01: Mutable GitHub Action
+# CI-01: GitHub Action Uses a Moving Version
 
 ## Why This Exists
 
 Workflow dependencies execute inside CI and can receive repository contents,
-tokens, artifacts, and deployment access. A movable tag can resolve to
-different code later without changing the workflow diff.
+tokens, build files, and deployment access. A version label such as `v4` can
+later point to different code without changing this repository.
 
 ## Secure Baseline
 
-All third-party Actions use reviewed full commit SHAs, human-readable version
-comments, minimal token permissions, and bounded job timeouts.
+All third-party Actions use reviewed full commit hashes, readable version
+comments, minimal token permissions, and job timeouts.
 
 ## Intentional Failure
 
@@ -32,8 +32,8 @@ zizmor .
 
 ## What The Evidence Proves
 
-It proves a workflow dependency is referenced through a mutable name instead
-of an immutable commit.
+It proves a workflow dependency uses a version label that can later point to
+different code instead of one exact commit.
 
 ## What It Does Not Prove
 
@@ -42,9 +42,5 @@ permissions, isolation, and controlled updates remain necessary.
 
 ## Secure Response
 
-Pin the reviewed commit, minimize permissions, review workflow changes as
-executable supply-chain changes, and update pins through reviewed automation.
-
-## Lecture Status
-
-Core PR demonstration.
+Pin the reviewed commit, minimize permissions, treat workflow changes as code
+that will run, and update pins through reviewed automation.

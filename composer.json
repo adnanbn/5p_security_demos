@@ -50,8 +50,7 @@
             "@php artisan test",
             "@php vendor/bin/pint --test"
         ],
-        "incident:1": "@php artisan masterclass:replay 1",
-        "incident:2": "@php artisan masterclass:replay 2 --requests=120 --seed=20260808",
+        "incident": "@php artisan masterclass:replay",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
