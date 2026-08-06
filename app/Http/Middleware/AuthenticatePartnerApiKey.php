@@ -6,6 +6,7 @@ use App\Security\SecurityEventRecorder;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticatePartnerApiKey
@@ -36,6 +37,8 @@ class AuthenticatePartnerApiKey
 
     private function deny(Request $request, string $reasonCode): JsonResponse
     {
+        Log::warning('partner.request_denied', $request->headers->all());
+
         $this->events->partnerCredentialDenied($request, $reasonCode);
 
         return response()->json([
