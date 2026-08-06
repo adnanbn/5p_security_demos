@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateBookingRequest;
 use App\Security\SecurityEventRecorder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,7 +53,7 @@ class BookingController extends Controller
         ]);
     }
 
-    public function update(UpdateBookingRequest $request, int $booking): JsonResponse
+    public function update(Request $request, int $booking): JsonResponse
     {
         $actor = $request->user();
         $ownedBooking = $actor->bookings()->find($booking);
@@ -75,7 +74,7 @@ class BookingController extends Controller
         Gate::authorize('update', $ownedBooking);
 
         $ownedBooking->update(
-            $request->safe()->only(['title', 'starts_at']),
+            $request->all(),
         );
 
         $this->events->authorization(
