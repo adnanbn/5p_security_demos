@@ -40,7 +40,7 @@ class PartnerWebhookVerifier
 
         $replayKey = 'security:webhook:'.hash('sha256', $eventId);
 
-        if (! Cache::add($replayKey, true, now()->addSeconds($tolerance * 2))) {
+        if (! Cache::put($replayKey, true, now()->addSeconds($tolerance * 2))) {
             abort(409, 'Webhook already processed.');
         }
 
