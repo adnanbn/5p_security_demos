@@ -1,28 +1,47 @@
+<!--
+Use short, plain language. These comments are guidance and do not appear in the
+rendered pull request. Never paste secrets, private data, or unredacted
+production logs here.
+-->
+
+## Problem Statement / Summary
+
+<!-- Why is this change needed? What behavior changed? -->
+
+
 ## Risk
 
-What data or service does this change affect? Who can use it, and where is
-access checked?
+<!--
+How could this fail or be abused? Consider access, data, availability, and
+important failure cases. Where does the server enforce the decision?
+-->
 
-## Guard
 
-Where does the server make the security decision? What happens when information is missing
-or a dependency fails?
+## Testing Done
 
-## Proof
+<!--
+What proves the expected behavior? Include a denied or failure case when the
+change affects permissions, validation, or trust.
+-->
 
-- [ ] Happy-path behavior is covered.
-- [ ] At least one blocked action has a repeatable negative test.
-- [ ] Protected data is absent from denial and error responses.
+- Test or safe evidence:
+- Result:
+- Denied or failure case, if relevant:
 
-## Automated Gate
+## Required Checks
 
-Which required quality or security check evaluates this change?
+<!-- Which exact CI checks must pass before merge? If none apply, explain why. -->
 
-## Observability
+- [ ] Required CI check or workflow:
 
-What log event, request ID, metric, or alert would help investigate
-misuse without logging secrets or unnecessary personal data?
+## Reviewer Notes
 
-## Remaining Risk
+<!--
+What should reviewers focus on? Call out access rules, sensitive data, logs and
+alerts, migrations, rollback, or important tradeoffs.
+-->
 
-What does this change or its automated evidence not prove?
+
+## Anything Else
+
+<!-- Add safe screenshots, links, rollout details, or remaining risks if useful. -->

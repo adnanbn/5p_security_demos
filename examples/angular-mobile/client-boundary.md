@@ -1,43 +1,77 @@
-# Frontend and Mobile Security Exercise
+# Frontend and Mobile Cancellation Exercise
 
-The UI hides cancellation when the API says `canCancel` is false:
+The code in [`booking-cancel.ts`](booking-cancel.ts) looks reasonable in a
+client application:
 
 ```ts
-if (booking.canCancel) {
-  showCancelButton();
-}
+if (!booking.canCancel) return;
 
 await http.post(`/api/bookings/${booking.id}/cancel`, {
   accountId: currentUser.accountId,
+  refundAmount: booking.refundAmount,
+  version: booking.version,
 });
 ```
 
-This may be reasonable interface code. It is not a server-side permission check.
+Now add the product rules:
 
-Assume a valid user can:
+- A customer may cancel only their own booking and only until 24 hours before
+  it starts.
+- Support staff may follow an approved override path.
+- The mobile application retries after a timeout.
+- The screen may have been open for several minutes before the request is sent.
 
-1. Replay the request outside the Angular, Next.js, or mobile client.
-2. Change the booking identifier and body.
-3. Continue using an older mobile client after the UI changes.
+## Your Task
 
-## Review the Change
+1. Which values are client input, and which decisions belong to the server?
+2. What can change after the screen loads?
+3. Choose three tests that prove the correct user, the current rules, and a
+   retry that does not cancel or refund twice.
+4. What should be logged, and which check should be required before merge?
 
-- **Risk:** A valid user may cancel another account's booking if the API trusts
-  the client-provided account identifier or the hidden button.
-- **Protection:** The server gets identity from the login credential and checks
-  permission for the requested booking. This works the same in Laravel, Django,
-  and other server frameworks.
-- **Test:** A request test signs in as one user, targets another user's
-  booking, expects a denial, and verifies that the booking state did not change.
-- **Automated check:** The focused API test is required before merge.
+Stop here before reading the review guide.
 
-## Example Review Comment
+---
 
-> Hiding this button is useful UX, but a caller can replay and modify the API
-> request. Please enforce cancellation authorization on the server and add a
-> valid non-owner request test that proves the booking remains unchanged.
+## Review Guide
 
-The framework can reduce accidental HTML injection through default escaping,
-but raw-HTML APIs and unsafe DOM access still need review. Client-side
-validation improves feedback; the server remains the authority for identity,
-authorization, validation, and state changes.
+### Client Input Is Not Proof
+
+The caller can change the booking ID, account ID, refund amount, version, and
+the visible `canCancel` value. The server gets the actor and role from the
+authenticated session. It loads the booking, checks ownership or support
+permission, applies the current deadline, and calculates the refund itself.
+
+### State Can Change
+
+The deadline may pass, the booking may already be cancelled, its version may
+change, or support may update it while the screen is open. The server must use
+current data when it makes the change. A version can help detect stale data,
+but it does not prove identity or permission.
+
+### Make Retries Safe
+
+Cancellation and refund should complete as one controlled operation. An
+idempotency key, unique operation record, or database constraint can prevent a
+timeout retry from applying the same action twice.
+
+### Useful Tests
+
+- A customer cannot cancel another customer's booking.
+- A customer cannot cancel after the deadline, while the authorized support
+  path follows its separate rule.
+- Repeating the same logical request does not cancel or refund twice.
+- A stale version cannot overwrite newer state.
+
+### Useful Evidence
+
+Log the actor, booking, decision, reason, request or correlation ID, and result.
+Do not log tokens, payment details, or unnecessary personal data. Require the
+focused API or feature tests before merge. A generic scanner is unlikely to
+understand the deadline, support override, or refund rule.
+
+## Cross-Stack Translation
+
+The framework names change, but the server decisions do not. A controller,
+view, route handler, or service must authenticate the actor, authorize the
+action, read current state, apply the change once, and record the outcome.

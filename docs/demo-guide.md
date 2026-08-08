@@ -55,4 +55,8 @@ Use the prompt in
 branch. Verify every AI claim with the code, tests, scanner result, or official
 documentation.
 
+The repository also includes a reusable
+[`mcp-security-review` Skill](../.agents/skills/mcp-security-review/SKILL.md)
+and a harder [frontend and mobile exercise](../examples/angular-mobile/client-boundary.md).
+
 Unsafe demo branches are for learning only and must not be merged.

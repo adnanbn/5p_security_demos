@@ -1,193 +1,136 @@
 # INCIDENT-01 Review: One User Opens Another User's Booking
 
 > [!IMPORTANT]
-> This is a **completed fictional example**, not a real incident. It uses the
-> [flexible incident review template](../../docs/incident-review-template.md).
-> The template is a guide, not a required process. All users, records, times,
-> and evidence in this folder are fictional.
+> This is a fictional teaching example. The users, data, times, and evidence are
+> not real. It follows the
+> [flexible incident review template](../../docs/incident-review-template.md),
+> which is a guide rather than a required process.
 
-## 1. Incident Metadata
+## 1. Status
 
-- **Incident ID:** INCIDENT-01
-- **Title:** Cross-user booking access
-- **Status:** Resolved teaching scenario
-- **Severity:** Not assigned; fictional exercise
-- **Started:** 09:09, when the cross-account response was reproduced
-- **Discovered:** 09:09 when QA reproduced the problem
-- **Reported to the team:** 09:21
-- **Contained:** 09:34 by disabling the endpoint
-- **Resolved:** Secure behavior implemented and tested on `main`
-- **Service or data:** Booking API and per-user booking data
+- **Incident:** Cross-user booking access
+- **Unsafe behavior began:** Unknown
+- **Discovered in staging:** 09:09
+- **Confirmed in production:** 09:25 with approved test accounts
+- **Declared:** 09:28
+- **Contained:** 09:34 by disabling the affected endpoint
+- **Service restored:** 10:22 after staging and production verification
 - **Review owner:** Booking API owner
-- **Evidence:** Files in this incident directory
+- **Current state:** Service restored, review complete, follow-up actions tracked
 
-## 2. Executive Summary
+## 2. Summary
 
-A QA tester opened booking `8412` as Account A and copied its URL. The same URL
-opened while the tester was logged in as Account B. Both accounts were normal
-users; no stolen password or login bypass was required.
+QA copied a booking URL from Account A and opened it while signed in as Account
+B. Account B received Account A's protected booking data. Both accounts had valid
+logins. The failure was a missing permission check, not a login bypass.
 
-The endpoint checked that the user was logged in, but it loaded the booking only
-by its ID. It did not check who owned the booking. The team disabled the
-endpoint, limited the query to the signed-in user's bookings, kept a second
-server-side permission check, added a two-user test, and improved permission
-logging.
+The team confirmed the behavior with controlled accounts, disabled the affected
+endpoint, fixed the ownership and authorization checks, verified the repair with
+two accounts, restored the endpoint, and assigned follow-up work.
 
-## 3. Impact and Scope
+## 3. Impact and Evidence
 
 ### Confirmed
 
-- Account B received a `200` response for booking `8412` after the URL was
-  copied from Account A.
-- Login succeeded for both fictional users.
-- The rule that keeps each user's booking private failed.
-- The behavior was repeatable in the QA scenario.
+- A valid non-owner received another user's booking data.
+- The behavior was reproducible in staging and production with controlled data.
+- The endpoint loaded a booking by ID without checking its owner.
 
-### Suspected but Unconfirmed
+### Possible but Not Confirmed
 
-- Other authenticated users may have been able to request bookings they did not
-  own while the unsafe path existed.
+- Other authenticated users may have reached bookings they did not own while the
+  unsafe path existed.
 
 ### Unknown
 
-- Which user received booking `8412` on each earlier request.
-- Whether booking `8412` belonged to that user in other requests.
-- Which booking fields were returned in earlier responses.
-- How many users, records, or requests could have exercised the path.
+- When the unsafe behavior first reached production.
+- How many earlier users, requests, or records were affected.
+- Which user made each earlier booking request.
+- Which protected fields were returned in earlier responses.
 
-The supplied access logs cannot prove that only one record or user was affected.
+The old logs contain response codes but not enough actor, owner, and permission
+information. Missing evidence does not prove that there was no broader exposure.
 
 ## 4. Detection
 
-- **First signal:** QA reproduced a copied booking URL across two logged-in
-  browser sessions.
-- **Detection source:** Ordinary feature testing, not an automated security
-  alert.
-- **Actionable detail:** The account switch, booking identifier, response
-  status, and reproduction steps.
-- **Earlier test that was missing:** A valid logged-in non-owner feature
-  test.
-- **Evidence gap:** Access logs did not connect the user, booking owner, and
-  permission result.
+- **First signal:** QA reproduced the copied URL with two valid accounts.
+- **Useful evidence:** Account B received Account A's protected booking data.
+- **Earlier protection that was missing:** A valid logged-in non-owner test.
+- **Evidence gap:** The logs did not connect the actor, booking owner, and
+  permission result under one request ID.
 
-## 5. Timeline
+## 5. Timeline and Decisions
 
-| Time | Observed fact or evidence | Decision or action | Owner |
+| Time | Confirmed fact | Decision or action | Owner |
 | --- | --- | --- | --- |
-| 09:06 | QA signs into fictional Account A as user 17. | Begin booking test. | QA |
-| 09:07 | Account A opens booking `8412`. | Copy the booking URL. | QA |
-| 09:08 | QA signs into fictional Account B as user 23 in a second browser. | Continue the same test across accounts. | QA |
-| 09:09 | The copied `8412` URL returns `200` in Account B's browser. | Reproduce and preserve the steps. | QA |
-| 09:21 | QA reports the repeatable cross-account response. | Start the investigation. | QA and API owner |
-| 09:34 | The endpoint is disabled. | Stop more access while the team checks the possible impact. | API owner |
+| 09:09 | QA reproduces the cross-account response in staging. | Preserve the steps and report the issue. | QA |
+| 09:25 | Controlled production accounts show the same leak. | Declare a security incident. | API owner |
+| 09:28 | Production impact is confirmed; historical scope is unknown. | Assign an incident lead and begin containment and communication. | Incident lead |
+| 09:34 | The unsafe behavior is isolated to one endpoint. | Disable that endpoint instead of the whole platform. | API owner |
+| 09:41 | The team finds the missing ownership and authorization checks. | Keep containment active while preparing the repair. | API owner |
+| 09:48 | The change is small, understood, and covered by a focused test. | Fix forward instead of rolling back. | Incident lead and API owner |
+| 10:05 | Staging returns `200` for the owner and `404` for the non-owner. | Approve the production deployment. | QA and API owner |
+| 10:18 | Controlled production verification passes with no protected data returned to the non-owner. | Approve endpoint restoration. | Incident lead |
+| 10:22 | The endpoint is restored and permission events remain healthy. | Continue monitoring while the impact review finishes. | API and platform owners |
+| 10:35 | Old logs cannot establish the historical start or full scope. | Record the limitation and make no unsupported claims. | Incident lead |
+| 11:00 | Required communication and follow-up work have owners. | Complete the review and track the open actions. | Incident lead |
 
-## 6. Five Hows: Causal Analysis
+## 6. How Was This Possible?
 
 | Step | How was this possible? | Evidence | Missing protection |
 | --- | --- | --- | --- |
-| Impact | Account B received Account A's booking. | QA report and repeated `200` for booking `8412`. | The request did not enforce the per-user privacy rule. |
-| 1 | The endpoint found a booking only by its numeric ID. | Unsafe example in [`AUTHZ-01`](../../demos/AUTHZ-01/README.md). | The query was not limited to the signed-in user's bookings. |
-| 2 | Login succeeded, but the server did not check ownership or another permission rule. | [`root-cause-and-lessons.md`](root-cause-and-lessons.md). | Login was treated as permission. |
-| 3 | Existing tests covered the owner and a logged-out user, but not a valid non-owner. | PR #1 makes the later two-user tests fail. | The privacy rule was missing from the tests before release. |
-| 4 | Generic scanners stayed green because the code was valid and matched no common risky pattern. | [PR #1](https://github.com/adnanbn/5p_security_demos/pull/1). | A scanner did not know the application's ownership rule. |
-| 5 | Old logs recorded requests and status codes without the user, booking owner, and permission result together. | Supplied edge and application logs. | The logs could not answer impact questions quickly. |
+| Impact | Account B received Account A's booking. | Controlled two-account reproduction | Per-user privacy rule was not enforced. |
+| Request | The endpoint loaded a booking by its global ID. | Authorization demo and code diff | Query was not limited to the signed-in user. |
+| Guard | Login succeeded, but ownership and permission were not checked. | Root-cause review | Server-side authorization check was missing. |
+| Test and review | Existing tests did not include a valid non-owner. Generic scanners did not know the product rule. | PR #1 and focused test | Negative authorization test was missing from CI. |
+| Detection | Old logs recorded response codes without enough decision context. | Supplied access logs | Actor, owner, result, and reason were not connected. |
 
-The causal chain is not "QA used the wrong browser." Account switching exposed
-a missing server-side permission check.
+Authentication succeeded. Authorization never happened.
 
-## 7. Contributing Conditions
+## 7. Contain, Fix, Recover, and Communicate
 
-- **Technical design:** A global lookup replaced a query limited to the signed-in
-  user, and the second permission check disappeared.
-- **Testing and review:** No valid authenticated non-owner test carried the
-  product rule.
-- **Logging:** The logs did not record the user, booking, permission result, and
-  reason under one request ID.
-- **Process:** Login on the route could create false confidence during review.
-- **External conditions:** None are required to explain this fictional incident.
+- **Containment:** Disable the affected endpoint. Keep the rest of the platform
+  available because the unsafe behavior is isolated to one route.
+- **Repair:** Limit the query to the signed-in user's bookings and keep a second
+  server-side permission check.
+- **Restore proof:** Owner receives `200`; valid non-owner receives `404`; the
+  protected booking reference is absent; the deployed version is confirmed.
+- **Monitoring:** Watch allowed and denied permission events and deployment
+  health after restoration.
+- **Communication:** Share confirmed facts, current containment, known limits,
+  required action, and the next update. Do not guess at historical scope.
+- **Remaining uncertainty:** The old logs cannot reconstruct the complete
+  historical impact.
 
-## 8. Resolution and Recovery
+## 8. Action Items
 
-### Stop the Ongoing Harm
+| ID | Risk or problem | Action | Owner | Due | Proof | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| AUTHZ-01-A | A global lookup can bypass ownership. | Scope the query to the signed-in user and keep the second permission check. | Booking API owner | Before restore | Owner `200`; non-owner `404`; protected reference absent | Complete |
+| AUTHZ-01-B | The ownership rule can disappear without failing CI. | Keep owner, logged-out, missing-record, and valid non-owner tests as required checks. | Booking API owner | Before next feature release | Focused test fails on PR #1 and passes on `main`; verify branch protection requires it | Test complete; enforcement pending |
+| AUTHZ-01-C | Logs cannot answer actor and permission questions. | Record request ID, actor, resource, result, and reason without protected contents; test the log shape and redaction. | Platform and API owners | Before next feature release | Allowed and denied event tests pass; secrets and booking contents are absent | Event complete; test pending |
+| AUTHZ-01-D | Response decisions depend on memory. | Add a short runbook for containment, evidence preservation, restore proof, monitoring, and decision ownership. | API and incident owners | Before next feature release | A tabletop replay follows the runbook successfully | Open |
+| AUTHZ-01-E | Incident updates can become vague or speculative. | Record the audience, confirmed facts, required action, owner, and next update time. | Incident and communications owners | Before the next incident exercise | Completed communication decision record | Open |
 
-The endpoint was disabled at 09:34. This stopped more access but temporarily
-removed the feature.
+## 9. Closure
 
-### Permanent Fix
+- **Service restored at:** 10:22 after staging and production verification
+- **Communication decision:** Record confirmed impact and evidence limits; do not
+  claim that only one user was affected
+- **Remaining risk:** Historical impact cannot be reconstructed from the old logs
+- **Open actions:** CI enforcement, permission-log test, response runbook, and
+  communication record
+- **Follow-up:** Action owners report evidence by their listed due dates
+- **Review state:** Complete; open actions remain tracked
 
-- Limit the lookup to the signed-in user's bookings.
-- Keep a second server-side permission check. This demo uses a Laravel policy.
-- Return `404` for a missing or non-owned booking.
-- Log a small permission result without booking contents.
+Restoring the endpoint required technical proof. Closing the review required a
+recorded communication decision and clear ownership of the remaining work.
 
-### Recovery
-
-Re-enable the endpoint only after the secure behavior and negative proof pass.
-
-### Verification and Remaining Risk
-
-- The two-user feature test expects `404` and verifies that the protected
-  reference is absent.
-- The secure implementation records allowed and denied permission results.
-- Historical scope remains unknown because the original evidence was
-  insufficient.
-
-## 9. Communication
-
-| Audience | Confirmed facts they need | Decision or action they need | Owner | Next update |
-| --- | --- | --- | --- | --- |
-| Responders | Reproduction steps, affected route, and limits of the logs | Stop more access, preserve evidence, and test the fix | Incident owner | When the protection or impact estimate changes |
-| Internal stakeholders | Confirmed cross-account response and unknown historical impact | Support feature disablement and investigation | Incident owner | After access is stopped |
-| Customers | Only if real impact were confirmed; do not include private records | Understand affected feature and protective action | Communications owner | Time-boxed update |
-
-Do not claim that only one user was affected or that no broader exposure
-occurred when the logs cannot prove either statement.
-
-## 10. What Helped, What Hurt, and Where We Were Lucky
-
-### Helped
-
-- QA tested across two valid accounts.
-- The failure was simple to reproduce.
-- The endpoint could be disabled quickly.
-
-### Hurt or Delayed the Response
-
-- The negative authorization case was missing at incident time; PR #1 is a
-  later proof of the fix.
-- Generic scanners could not express the product rule.
-- Logs could not connect the user, owner, booking, and permission result.
-
-### Luck That Should Become a Control
-
-QA found the issue through ordinary testing. That discovery should become an
-automated two-user test, and a required merge check where repository
-enforcement is available, rather than remain dependent on chance.
-
-## 11. Action Items
-
-| ID | Risk or condition | Action | Type | Owner | Due | Verifiable proof | Gate, alert, or runbook | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| AUTHZ-01-A | Global lookup bypasses ownership | Limit the lookup to the signed-in user and keep the second permission check | Prevent | Booking API owner | Before re-enable | Owner receives `200`; non-owner receives `404` | Application tests | Complete on secure `main` |
-| AUTHZ-01-B | The privacy rule is absent from CI | Add owner, logged-out, and valid non-owner tests | Prevent | Booking API owner | Before re-enable | Focused test fails on PR #1 and passes on `main` | Automated application test; require it before merge when repository settings allow | Implemented as PR check; enforcement pending |
-| AUTHZ-01-C | Logs cannot answer impact questions | Record request ID, user, booking ID, result, and reason without booking contents | Detect | Platform and API owners | Before release | Structured allowed and denied events | Permission-log test and alert design | Partial: event implemented; test and alert pending |
-| AUTHZ-01-D | Reviewers may equate login with permission | Add the review question: "What can a valid user do that they should not be able to do?" | Prevent | Engineering lead | Next review cycle | Question appears in PR guidance and review examples | PR review practice | Documented |
-
-## 12. Closure
-
-- **Evidence required:** Secure behavior, two-user test, and a small permission
-  log entry.
-- **Remaining risk:** Historical impact cannot be reconstructed from the
-  supplied logs.
-- **Lesson:** Login identifies the user. The server must still check permission
-  for every protected request.
-
-## 13. Evidence Appendix
+## 10. Evidence
 
 - [Incident packet and reading order](README.md)
 - [Support report](support-report.md)
-- [Timeline](timeline.md)
-- [Evidence manifest](evidence-manifest.json)
-- [Root cause and lessons](root-cause-and-lessons.md)
-- [AUTHZ-01 durable demo](../../demos/AUTHZ-01/README.md)
+- [Generated timeline](timeline.md)
+- [Root cause and evidence limits](root-cause-and-lessons.md)
+- [Secure implementation and tests](../../demos/AUTHZ-01/README.md)
 - [Deliberate failing PR #1](https://github.com/adnanbn/5p_security_demos/pull/1)

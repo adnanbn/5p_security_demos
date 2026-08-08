@@ -60,3 +60,11 @@ Each demo branch removes one protection so a check fails.
 5. Explain what the result proves.
 
 These branches contain teaching examples and must not be merged.
+
+## 7. Reuse The AI Review Method
+
+[`AGENTS.md`](../AGENTS.md) defines the shared repository rules. The
+[`security-review Skill`](../.agents/skills/mcp-security-review/SKILL.md) turns
+those rules into a repeatable review that can use local commands, CI, or an
+approved MCP connection. Tool-specific instruction files stay small and point
+back to the same reviewed method.

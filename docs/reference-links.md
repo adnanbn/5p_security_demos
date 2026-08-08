@@ -30,7 +30,12 @@ Primary sources used by the masterclass:
 ## AI And Incident Response
 
 - [OpenAI: Hugging Face model-evaluation security incident](https://openai.com/index/hugging-face-model-evaluation-security-incident/)
+- [OpenAI: Responding to next-frontier critical cyber capabilities](https://openai.com/index/responding-next-frontier-critical-cyber-capabilities/)
 - [Hugging Face: July 2026 security incident](https://huggingface.co/blog/security-incident-july-2026)
+- [Anthropic: Investigating incidents from cybersecurity evaluations](https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals)
+- [Agent Skills specification](https://agentskills.io/specification)
+- [Model Context Protocol introduction](https://modelcontextprotocol.io/docs/getting-started/intro)
+- [OpenAI Codex Security overview](https://help.openai.com/en/articles/20001107-codex-security)
 - [NIST SP 800-61 Revision 3](https://csrc.nist.gov/pubs/sp/800/61/r3/final)
 - [Google SRE: Postmortem practices for incident management](https://sre.google/workbook/postmortem-culture/)
 - [PagerDuty incident postmortem template](https://response.pagerduty.com/after/post_mortem_template/)

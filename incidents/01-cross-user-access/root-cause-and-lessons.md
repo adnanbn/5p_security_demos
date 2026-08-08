@@ -19,10 +19,26 @@ Authentication succeeded. Authorization never happened.
 - Whether booking `8412` belonged to that user.
 - Which booking fields were returned.
 - Whether other users exercised the same path.
+- When the unsafe behavior first reached production.
+
+Missing evidence does not prove that no broader exposure occurred.
+
+## Response Decisions
+
+- Declare an incident after controlled production confirmation. Do not wait for
+  the root cause before stopping the harm.
+- Disable the affected endpoint rather than the whole platform because the team
+  could isolate the unsafe route.
+- Fix forward because the change was small, understood, and covered by a
+  two-account test.
+- Restore the endpoint only after staging and production verification passed.
+- Keep the incident open until impact limits, communication, and follow-up
+  ownership were recorded.
 
 ## Fixes
 
 - Limit the query to the signed-in user's bookings.
-- Keep a second server-side permission check. This demo uses a Laravel policy.
+- Keep a second server-side permission check. This demo implements it with a
+  Laravel policy, but the rule applies to any server stack.
 - Add a two-user feature test.
 - Log the permission result without logging the booking contents.
