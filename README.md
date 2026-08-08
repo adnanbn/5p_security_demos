@@ -28,6 +28,12 @@ code, then compare it with a pull request where one protection is removed.
 - [`incidents/README.md`](incidents/README.md) contains the booking-access incident.
 - [`docs/demo-guide.md`](docs/demo-guide.md) gives a short path through the examples.
 - [`docs/scanner-cheatsheet.md`](docs/scanner-cheatsheet.md) explains what each check can catch.
+- [`.github/pull_request_template.md`](.github/pull_request_template.md) shows
+  how to document change, risk, proof, and the required check.
+- [`examples/angular-mobile/client-boundary.md`](examples/angular-mobile/client-boundary.md)
+  is the cancellation design-review exercise used in the session.
+- [`.agents/skills/mcp-security-review/SKILL.md`](.agents/skills/mcp-security-review/SKILL.md)
+  is a repository-owned, evidence-based AI review workflow.
 
 ## Local Setup
 

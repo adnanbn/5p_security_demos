@@ -1,8 +1,8 @@
 # INCIDENT-01: One User Opens Another User's Booking
 
-A normal logged-in user can open another user's booking by changing the booking
-number in the URL. This incident separates login from permission and shows the
-limits of incomplete logs.
+A normal logged-in user can open another user's booking by copying its URL into
+a second signed-in account. This incident separates login from permission and
+shows the limits of incomplete logs.
 
 Everything in this directory is fictional.
 
@@ -28,7 +28,7 @@ cause. For a quick review, read the files in order.
 | Context | `support-report.md`, `timeline.md` | The first report and the known sequence of events |
 | Questions | `investigation-questions.md` | Short questions for the investigation |
 | Root cause and lessons | `root-cause-and-lessons.md` | The cause, what the logs cannot prove, and the fixes |
-| Completed review | `incident-review.md` | A worked example with Five Hows and action items |
+| Completed review | `incident-review.md` | A worked example that follows the evidence, decisions, causes, and action items |
 
 ## Replay
 

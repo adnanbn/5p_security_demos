@@ -98,11 +98,13 @@ class IncidentEvidenceGenerator
 At 09:21, QA reported a repeatable access problem in the test environment.
 
 QA opened booking `8412` while signed in as fictional Account A, copied the URL,
-and pasted it into a second browser that was already signed in as fictional
-Account B. The second browser returned `200` and displayed Account A's booking.
+and pasted it into a second browser signed in as fictional Account B. The second
+browser returned `200` and displayed Account A's booking.
 
 Both accounts were ordinary authenticated users. No elevated role, stolen
-password, or production customer data was involved.
+password, or real customer data was involved. QA reproduced the behavior in
+staging. The team later confirmed the same behavior in production using approved
+test accounts and the minimum number of requests.
 
 Do not include real customer information in the investigation channel.
 MARKDOWN."\n");
@@ -110,22 +112,30 @@ MARKDOWN."\n");
         $this->files->put($directory.'/investigation-questions.md', <<<'MARKDOWN'
 # Investigation Questions
 
-1. Is this a bug, a security incident, or both?
-2. How would you stop more users from reaching the unsafe endpoint?
-3. What can the supplied logs prove?
-4. What evidence is missing?
-5. Which test would have caught the problem before deployment?
+1. What is confirmed, and what is still unknown?
+2. What is the smallest action that stops more exposure?
+3. What can the supplied logs prove about timing and scope?
+4. Would you roll back or fix forward, and why?
+5. What proof is required before restoring the endpoint?
+6. What work must be owned before closing the incident?
 MARKDOWN."\n");
 
         $this->files->put($directory.'/timeline.md', <<<'MARKDOWN'
 # Timeline
 
-- **09:06** - QA signs into fictional Account A as user 17.
-- **09:07** - Account A opens booking `8412` and copies its URL.
-- **09:08** - QA signs into fictional Account B as user 23 in a second browser.
-- **09:09** - The copied `8412` URL returns `200` in Account B's browser.
+- **09:06** - QA starts a controlled two-account test in staging.
+- **09:09** - Account B receives Account A's booking data. QA preserves the steps.
 - **09:21** - QA reports the repeatable cross-account response.
-- **09:34** - The endpoint is disabled while the team checks how many requests may be affected.
+- **09:25** - The team confirms the same behavior in production with approved test accounts.
+- **09:28** - The team declares a security incident and assigns an incident lead.
+- **09:34** - The endpoint is disabled. Investigation and communication continue.
+- **09:41** - The team confirms the missing ownership and authorization checks.
+- **09:48** - The team chooses a tested fix-forward because the change is small and isolated.
+- **10:05** - Staging verification passes: owner `200`, non-owner `404`, no protected data.
+- **10:18** - The fix is deployed. The controlled production verification also passes.
+- **10:22** - The endpoint is restored and the team monitors permission events.
+- **10:35** - Historical scope remains unknown because the old logs lack actor and authorization details.
+- **11:00** - The incident review assigns follow-up actions and records the communication decision.
 MARKDOWN."\n");
 
         $this->files->put($directory.'/root-cause-and-lessons.md', <<<'MARKDOWN'
@@ -150,11 +160,27 @@ Authentication succeeded. Authorization never happened.
 - Whether booking `8412` belonged to that user.
 - Which booking fields were returned.
 - Whether other users exercised the same path.
+- When the unsafe behavior first reached production.
+
+Missing evidence does not prove that no broader exposure occurred.
+
+## Response Decisions
+
+- Declare an incident after controlled production confirmation. Do not wait for
+  the root cause before stopping the harm.
+- Disable the affected endpoint rather than the whole platform because the team
+  could isolate the unsafe route.
+- Fix forward because the change was small, understood, and covered by a
+  two-account test.
+- Restore the endpoint only after staging and production verification passed.
+- Keep the incident open until impact limits, communication, and follow-up
+  ownership were recorded.
 
 ## Fixes
 
 - Limit the query to the signed-in user's bookings.
-- Keep a second server-side permission check. This demo uses a Laravel policy.
+- Keep a second server-side permission check. This demo implements it with a
+  Laravel policy, but the rule applies to any server stack.
 - Add a two-user feature test.
 - Log the permission result without logging the booking contents.
 MARKDOWN."\n");

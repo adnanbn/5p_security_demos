@@ -9,7 +9,7 @@ omitted deliberately.
 | --- | --- | --- |
 | Django | Owner-limited lookup and valid non-owner test (`AUTHZ-01`) | [`django/README.md`](django/README.md) |
 | Next.js | Server-owned identity and safe text rendering (`AUTHZ-01`, `XSS-01`) | [`nextjs/README.md`](nextjs/README.md) |
-| Angular and mobile | Client trust boundaries and safe rendering (`AUTHZ-01`, `XSS-01`) | [`angular-mobile/README.md`](angular-mobile/README.md) |
+| Angular and mobile | Cancellation authorization, stale state, safe retries, and safe rendering (`AUTHZ-01`, `XSS-01`) | [`angular-mobile/README.md`](angular-mobile/README.md) |
 
 ## Shared Rules
 
@@ -20,6 +20,7 @@ omitted deliberately.
 - Framework escaping is the default; raw-HTML APIs require explicit review and
   a focused test.
 - Negative tests should use a valid user attempting a forbidden action.
+- Important retries must not repeat a state change, charge, or refund.
 
 The main risks, protections, tests, and automated checks live in the
 [demo catalog](../demos/README.md). All identities, payloads, and hosts are

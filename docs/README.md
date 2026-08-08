@@ -11,7 +11,9 @@ Use this page to find the right starting point.
 | Run a simple incident review | [Incident review template](incident-review-template.md) |
 | Find the unsafe branches and pull requests | [Branch catalog](branch-catalog.md) |
 | Run checks locally | [Scanner cheatsheet](scanner-cheatsheet.md) |
-| Review a change with AI | [AI-assisted security review](ai-assisted-security-review.md) |
+| Prepare a pull request with evidence | [Pull request template](../.github/pull_request_template.md) |
+| Review a change with AI | [AI-assisted security review and repository Skill](ai-assisted-security-review.md) |
+| Review the cancellation exercise | [Frontend and mobile exercise](../examples/angular-mobile/client-boundary.md) |
 | Review package and CI risks | [Supply-chain guide](supply-chain-hardening.md) |
 | See the same ideas in other frameworks | [Framework examples](../examples/README.md) |
 | Plan one practical improvement | [Security upgrade exercise](security-week-objective.md) |
