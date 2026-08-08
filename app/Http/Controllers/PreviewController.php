@@ -18,11 +18,11 @@ class PreviewController extends Controller
     ): JsonResponse {
         $validated = $request->validate([
             'path' => ['required', 'string', 'max:512'],
-            'url' => ['prohibited'],
+            'url' => ['sometimes', 'url'],
         ]);
 
         try {
-            $url = $urls->previewUrl($validated['path']);
+            $url = $validated['url'] ?? $urls->previewUrl($validated['path']);
         } catch (InvalidArgumentException $exception) {
             throw ValidationException::withMessages([
                 'path' => $exception->getMessage(),
