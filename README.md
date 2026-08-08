@@ -7,6 +7,10 @@ backend, frontend, or mobile stack.
 The repository is intentionally small. Start with one risk, see the secure
 code, then compare it with a pull request where one protection is removed.
 
+> **Teaching warning:** `main` is the secure baseline. Each `demo/*` branch
+> deliberately removes one protection so an expected check fails. Do not use
+> those branches as production examples.
+
 ## What Is Here
 
 - Login and per-user access checks
@@ -74,6 +78,6 @@ All users, records, credentials, hosts, and incident details are fictional.
 The unsafe branches use harmless test data. Vulnerable package examples are
 never installed, and outbound-request tests block real network calls.
 
-The repository is private. Complete
-[`docs/public-release-checklist.md`](docs/public-release-checklist.md) before
-making it public.
+Released under the [MIT License](LICENSE). Contributions must follow
+[`CONTRIBUTING.md`](CONTRIBUTING.md), and security concerns must follow
+[`SECURITY.md`](SECURITY.md).
