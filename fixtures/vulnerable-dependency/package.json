@@ -1,0 +1,9 @@
+{
+  "name": "synthetic-vulnerable-dependency",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Non-executable dependency-scanning fixture.",
+  "dependencies": {
+    "lodash": "4.17.19"
+  }
+}
